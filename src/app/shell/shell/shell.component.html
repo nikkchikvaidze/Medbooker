@@ -1,0 +1,22 @@
+<nb-layout (window:resize)="resetHiddenBtn()">
+  <nb-layout-header fixed>
+    <button class="iconBtn" *ngIf="showMenuBtn" (click)="toggle()">
+      <div class="icon" [ngClass]="{ animation: showAnimation }">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+    <app-header></app-header>
+  </nb-layout-header>
+  <nb-sidebar
+    responsive
+    [collapsedBreakpoints]="['xs', 'is']"
+    [compactedBreakpoints]="['xs', 'is']"
+  >
+    <app-sidebar></app-sidebar>
+  </nb-sidebar>
+  <nb-layout-column class="colored-column-danger">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>

@@ -1,0 +1,19 @@
+.buttons {
+  .dashboard,
+  .doctors,
+  .upcoming,
+  .records {
+    margin-top: 15px;
+    color: rgb(34, 34, 34);
+    width: 210px;
+    text-transform: capitalize;
+    &:hover {
+      color: white;
+      background-color: rgb(34, 34, 34);
+    }
+    &:focus {
+      color: white;
+      background-color: rgb(34, 34, 34);
+    }
+  }
+}

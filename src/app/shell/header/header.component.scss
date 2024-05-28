@@ -1,0 +1,32 @@
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    p {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .btn {
+      color: rgb(34, 34, 34);
+      text-transform: capitalize;
+      margin-left: 10px;
+      &:hover {
+        color: white;
+        background-color: rgb(34, 34, 34);
+      }
+      &:focus {
+        color: white;
+        background-color: rgb(34, 34, 34);
+      }
+    }
+    .icon {
+      margin-left: 5px;
+      color: rgb(34, 34, 34);
+    }
+  }
+}
