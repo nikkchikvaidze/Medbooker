@@ -7,12 +7,12 @@ import {
   DoctorBookComponent,
   DoctorSearchComponent,
   HealthRecordsComponent,
-  LoginComponent,
   PatientsComponent,
-  RegisterComponent,
   UpcomingConsultationsComponent,
 } from './pages';
 import { ShellComponent } from './shell/shell/shell.component';
+import { LoginComponent } from './auth/login';
+import { RegisterComponent } from './auth/register';
 const routes: Routes = [
   {
     path: 'home',

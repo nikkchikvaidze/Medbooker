@@ -10,14 +10,13 @@ import {
   DoctorBookComponent,
   DoctorSearchComponent,
   HealthRecordsComponent,
-  LoginComponent,
   PatientsComponent,
-  RegisterComponent,
   UpcomingConsultationsComponent,
 } from './pages';
 import { HeaderComponent } from './shell/header/header.component';
 import { SidebarComponent } from './shell/sidebar/sidebar.component';
 import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,8 +24,6 @@ import { SharedModule } from './shared/shared.module';
     HeaderComponent,
     SidebarComponent,
     ShellComponent,
-    LoginComponent,
-    RegisterComponent,
     DashboardComponent,
     DoctorSearchComponent,
     DoctorBookComponent,
@@ -35,7 +32,7 @@ import { SharedModule } from './shared/shared.module';
     PatientsComponent,
     ConsultationRequestsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, SharedModule],
+  imports: [BrowserModule, AppRoutingModule, SharedModule, AuthModule],
   providers: [],
   bootstrap: [AppComponent],
 })

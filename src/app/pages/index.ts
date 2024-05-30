@@ -3,7 +3,5 @@ export * from './dashboard';
 export * from './doctor-book';
 export * from './doctor-search';
 export * from './health-records';
-export * from './login';
 export * from './patients';
-export * from './register';
 export * from './upcoming-consultations';
