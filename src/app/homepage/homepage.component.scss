@@ -1,48 +1,58 @@
+@import "../shared/custom-ui-styles/button/button";
+@import "../shared/custom-ui-styles/bubbles-bg/bubble-bg";
+
 .column-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("../../assets/medical3.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  .blur-layer {
+
+  .wrapper {
+    background: #50a3a2;
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.103);
-    backdrop-filter: blur(5px);
-    .login-button {
-      .btn {
-        color: rgb(34, 34, 34);
-        &:hover {
+
+    .container {
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 80px 0;
+        height: 400px;
+        text-align: center;
+        h1 {
+          font-size: 40px;
+          transition-duration: 1s;
+          transition-timing-function: ease-in-put;
           color: white;
-          background-color: rgb(34, 34, 34);
+          font-family: "Roboto", sans-serif;
+          font-weight: 300;
         }
-        &:focus {
-          color: white;
-          background-color: rgb(34, 34, 34);
-        }
-        width: 100px;
-        margin-bottom: 20px;
       }
     }
-    .register-button {
-      .btn {
-        color: rgb(34, 34, 34);
-        &:hover {
-          color: white;
-          background-color: rgb(34, 34, 34);
-        }
-        &:focus {
-          color: white;
-          background-color: rgb(34, 34, 34);
-        }
-        width: 100px;
-      }
+    .bg-bubbles {
+      @include bubbles;
+    }
+    @include animation;
+  }
+  .test {
+    padding: 20px 0;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    button {
+      @include button;
     }
   }
 }

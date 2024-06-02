@@ -1,1 +1,61 @@
-<p>login works!</p>
+<nb-layout>
+  <nb-layout-column class="column-container">
+    <div class="wrapper">
+      <div class="container">
+        <h1>Login to Medbooker</h1>
+        <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div
+            class="form-control"
+            [attr.data-error-message]="getErrorMessage('Email')"
+            [class.error-message]="isInvalid('Email')"
+          >
+            <input
+              nbInput
+              type="email"
+              placeholder="E-mail *"
+              formControlName="Email"
+              [class.valid]="isValid('Email')"
+              [class.invalid]="isInvalid('Email')"
+            />
+          </div>
+          <div
+            class="form-control"
+            [attr.data-error-message]="getErrorMessage('Password')"
+            [class.error-message]="isInvalid('Password')"
+          >
+            <input
+              nbInput
+              type="password"
+              placeholder="Password *"
+              formControlName="Password"
+              [class.valid]="isValid('Password')"
+              [class.invalid]="isInvalid('Password')"
+            />
+          </div>
+          <span *ngIf="isError">{{ errorMessage }}</span>
+          <button
+            nbButton
+            outline
+            status="basic"
+            type="submit"
+            id="login-button"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+      <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  </nb-layout-column>
+</nb-layout>

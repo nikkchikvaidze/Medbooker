@@ -9,6 +9,7 @@ import {
   SupabaseClient,
 } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable, from } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -30,15 +31,18 @@ export class AuthService {
 
   public signUp(
     email: string,
-    password: string
-  ): Observable<AuthResponse | AuthError | null> {
-    return from(this.supabase.auth.signUp({ email, password }));
+    password: string,
+    data: User
+  ): Observable<AuthResponse | null> {
+    return from(
+      this.supabase.auth.signUp({ email, password, options: { data } })
+    );
   }
 
   public signIn(
     email: string,
     password: string
-  ): Observable<AuthTokenResponsePassword | AuthError | null> {
+  ): Observable<AuthTokenResponsePassword | null> {
     return from(this.supabase.auth.signInWithPassword({ email, password }));
   }
 

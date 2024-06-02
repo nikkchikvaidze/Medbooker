@@ -1,1 +1,122 @@
-<p>register works!</p>
+<ng-container *ngIf="registerForm">
+  <nb-layout>
+    <nb-layout-column class="column-container">
+      <div class="wrapper">
+        <div class="container">
+          <h1>Register to Medbooker</h1>
+          <!-- [control]="registerForm?.controls?.['firstName']" -->
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div
+              class="form-control"
+              [attr.data-error-message]="getErrorMessage('Firstname')"
+              [class.error-message]="isInvalid('Firstname')"
+            >
+              <input
+                nbInput
+                type="text"
+                placeholder="Firstname *"
+                formControlName="Firstname"
+                [class.valid]="isValid('Firstname')"
+                [class.invalid]="isInvalid('Firstname')"
+              />
+            </div>
+            <div
+              class="form-control"
+              [attr.data-error-message]="getErrorMessage('Lastname')"
+              [class.error-message]="isInvalid('Lastname')"
+            >
+              <input
+                nbInput
+                type="text"
+                placeholder="Lastname *"
+                formControlName="Lastname"
+                [class.valid]="isValid('Lastname')"
+                [class.invalid]="isInvalid('Lastname')"
+              />
+            </div>
+            <div
+              class="form-control"
+              [attr.data-error-message]="getErrorMessage('Email')"
+              [class.error-message]="isInvalidEmail('Email')"
+            >
+              <input
+                nbInput
+                type="email"
+                placeholder="E-mail *"
+                formControlName="Email"
+                [class.valid]="isValidEmail('Email')"
+                [class.invalid]="isInvalidEmail('Email')"
+              />
+            </div>
+            <span *ngIf="isError">{{ errorMessage }}</span>
+            <div class="passwords-input" formGroupName="passwords">
+              <div
+                class="form-control"
+                [attr.data-error-message]="
+                  getErrorMessageForPasswords('Password')
+                "
+                [class.error-message]="isInvalidPassword('Password')"
+              >
+                <input
+                  nbInput
+                  type="password"
+                  placeholder="Password *"
+                  formControlName="Password"
+                  [class.valid]="isValidPassword('Password')"
+                  [class.invalid]="isInvalidPassword('Password')"
+                />
+              </div>
+              <div
+                class="form-control"
+                [attr.data-error-message]="
+                  getErrorMessageForPasswords('Confirmpassword')
+                "
+                [class.error-message]="isInvalidPassword('Confirmpassword')"
+              >
+                <input
+                  nbInput
+                  type="password"
+                  placeholder="Confirm Password *"
+                  formControlName="Confirmpassword"
+                  [class.valid]="isValidPassword('Confirmpassword')"
+                  [class.invalid]="isInvalidPassword('Confirmpassword')"
+                />
+              </div>
+            </div>
+            <div class="roles form-control">
+              <input
+                type="radio"
+                id="doctor"
+                [value]="role.Doctor"
+                formControlName="role"
+              />
+              <label for="doctor">Doctor</label>
+              <input
+                type="radio"
+                id="patient"
+                [value]="role.Patient"
+                formControlName="role"
+              />
+              <label for="patient">Patient</label>
+            </div>
+            <button nbButton outline status="basic" type="submit">
+              Register
+            </button>
+          </form>
+        </div>
+        <ul class="bg-bubbles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </nb-layout-column>
+  </nb-layout>
+</ng-container>
