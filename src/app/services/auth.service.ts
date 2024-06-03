@@ -7,6 +7,7 @@ import {
   AuthTokenResponsePassword,
   Session,
   SupabaseClient,
+  UserResponse,
 } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { User } from '../models/user.model';
@@ -27,6 +28,10 @@ export class AuthService {
 
   public getAuthState(): Observable<Session | null> {
     return this.authState.asObservable();
+  }
+
+  public getUser(): Observable<UserResponse | null> {
+    return from(this.supabase.auth.getUser());
   }
 
   public signUp(

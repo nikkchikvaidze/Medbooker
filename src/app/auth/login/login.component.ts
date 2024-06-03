@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
           this.errorMessage = signInErrorMessages(user.error.message);
           this.isError = true;
         } else {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['shell/dashboard']);
         }
       });
   }

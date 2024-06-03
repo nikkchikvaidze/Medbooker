@@ -13,22 +13,34 @@ import {
 import { ShellComponent } from './shell/shell/shell.component';
 import { LoginComponent } from './auth/login';
 import { RegisterComponent } from './auth/register';
+import { AnonymGuard, AuthGuard, PermissionGuard } from './guards';
+import { Roles } from './models/user.model';
+
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
     path: 'home',
+    canActivate: [AuthGuard],
     component: HomepageComponent,
   },
   {
     path: 'login',
+    canActivate: [AuthGuard],
     component: LoginComponent,
   },
   {
     path: 'register',
+    canActivate: [AuthGuard],
     component: RegisterComponent,
   },
   {
-    path: '',
+    path: 'shell',
     component: ShellComponent,
+    canActivate: [AnonymGuard],
     children: [
       {
         path: 'dashboard',
@@ -36,11 +48,19 @@ const routes: Routes = [
       },
       {
         path: 'search',
+        canActivate: [PermissionGuard],
         component: DoctorSearchComponent,
+        data: {
+          role: Roles.Patient,
+        },
       },
       {
         path: 'booking/:id',
+        canActivate: [PermissionGuard],
         component: DoctorBookComponent,
+        data: {
+          role: Roles.Patient,
+        },
       },
       {
         path: 'upcoming-consultations',
@@ -48,15 +68,27 @@ const routes: Routes = [
       },
       {
         path: 'consultation-requests',
+        canActivate: [PermissionGuard],
         component: ConsultationRequestsComponent,
+        data: {
+          role: Roles.Doctor,
+        },
       },
       {
         path: 'health-records',
+        canActivate: [PermissionGuard],
         component: HealthRecordsComponent,
+        data: {
+          role: Roles.Patient,
+        },
       },
       {
         path: 'patients',
+        canActivate: [PermissionGuard],
         component: PatientsComponent,
+        data: {
+          role: Roles.Doctor,
+        },
       },
     ],
   },

@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
           this.errorMessage = signUpErrorMessage(user.error.message);
           this.isError = true;
         } else {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['shell/dashboard']);
         }
       });
   }
