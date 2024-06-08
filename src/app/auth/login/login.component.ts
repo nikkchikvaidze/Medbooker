@@ -10,10 +10,7 @@ import { signInErrorMessages } from 'src/app/shared/utils/validation.fn';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup = this.fb.group({
-    Email: ['', [Validators.required, Validators.email]],
-    Password: ['', Validators.required],
-  });
+  loginForm: FormGroup | undefined;
   private isSubmitted = false;
   isError = false;
   errorMessage = '';
@@ -24,7 +21,16 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loginInitForm();
+  }
+
+  loginInitForm() {
+    this.loginForm = this.fb.group({
+      Email: ['', [Validators.required, Validators.email]],
+      Password: ['', Validators.required],
+    });
+  }
 
   isValid(controlName: string) {
     return (
