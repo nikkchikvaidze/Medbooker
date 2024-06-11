@@ -1,0 +1,48 @@
+nb-card {
+  height: 120px;
+  cursor: pointer;
+  nb-card-header,
+  nb-card-body {
+    text-align: center;
+    overflow: hidden;
+  }
+  nb-card-header {
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    border-bottom: none;
+  }
+  .first-header {
+    border-bottom: 1px solid #edf1f7;
+  }
+}
+
+.first-card {
+  opacity: 0;
+  animation: animate 0.3s linear 1.3s forwards;
+}
+
+.second-card,
+.third-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+.second-card {
+  animation: animate 0.3s linear 2s forwards;
+}
+
+.third-card {
+  animation: animate 0.3s linear 2.6s forwards;
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
