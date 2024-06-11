@@ -7,6 +7,8 @@ export interface Booking {
   description?: string;
   attendees: Attendee[];
   status: Status;
+  statusComment?: string;
+  title?: string;
 }
 
 export interface BookingRequest {
@@ -29,6 +31,11 @@ export interface BookingStatusUpdateRequest {
   bookingStatus: Status;
   comment?: string;
   includeDependent?: boolean;
+}
+
+export interface StatusChange {
+  status: Status;
+  id: number;
 }
 
 export interface Attendee {

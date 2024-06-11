@@ -1,8 +1,20 @@
 <h6>MEDBOOKER</h6>
 <div (window:resize)="resetHiddenBtn()">
   <p text-paragraph-font-weight>{{ fullname }}</p>
-  <button *ngIf="showBtn" class="btn" nbButton outline (click)="signoutUser()">
+  <button
+    *ngIf="showBtn"
+    status="basic"
+    id="signout-button"
+    nbButton
+    outline
+    (click)="signoutUser()"
+  >
     Log out
   </button>
-  <fa-icon class="icon" *ngIf="!showBtn" [icon]="arrowIcon"></fa-icon>
+  <fa-icon
+    class="icon"
+    *ngIf="!showBtn"
+    [icon]="arrowIcon"
+    (click)="signoutUser()"
+  ></fa-icon>
 </div>

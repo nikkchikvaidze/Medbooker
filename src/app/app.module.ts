@@ -8,8 +8,10 @@ import {
   ConsultationRequestsComponent,
   DashboardComponent,
   DoctorBookComponent,
+  DoctorDashboardComponent,
   DoctorSearchComponent,
   HealthRecordsComponent,
+  PatientDashboardComponent,
   PatientsComponent,
   UpcomingConsultationsComponent,
 } from './pages';
@@ -20,6 +22,13 @@ import { AuthModule } from './auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BASE_URL } from './shared';
+import { ReactiveFormsModule } from '@angular/forms';
+import {
+  NbCardModule,
+  NbDatepickerModule,
+  NbInputModule,
+  NbUserModule,
+} from '@nebular/theme';
 
 @NgModule({
   declarations: [
@@ -35,6 +44,8 @@ import { BASE_URL } from './shared';
     HealthRecordsComponent,
     PatientsComponent,
     ConsultationRequestsComponent,
+    DoctorDashboardComponent,
+    PatientDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +53,11 @@ import { BASE_URL } from './shared';
     SharedModule,
     AuthModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    NbCardModule,
+    NbDatepickerModule.forRoot(),
+    NbInputModule,
+    NbUserModule,
   ],
   providers: [{ provide: BASE_URL, useValue: environment.SUPABASE_BASE_URL }],
   bootstrap: [AppComponent],

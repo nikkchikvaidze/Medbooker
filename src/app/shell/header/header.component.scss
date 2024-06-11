@@ -1,8 +1,15 @@
+@import "../../shared/custom-ui-styles/buttons/second-button";
+
 :host {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  h6 {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    letter-spacing: 7px;
+  }
   div {
     display: flex;
     align-items: center;
@@ -10,19 +17,14 @@
     p {
       font-weight: bold;
       font-size: 16px;
+      color: #53e3a6;
+      text-align: center;
+      font-family: "Roboto", sans-serif;
     }
-    .btn {
-      color: rgb(34, 34, 34);
-      text-transform: capitalize;
-      margin-left: 10px;
-      &:hover {
-        color: white;
-        background-color: rgb(34, 34, 34);
-      }
-      &:focus {
-        color: white;
-        background-color: rgb(34, 34, 34);
-      }
+    button {
+      @include second-button;
+      width: 120px;
+      margin-left: 15px;
     }
     .icon {
       margin-left: 5px;

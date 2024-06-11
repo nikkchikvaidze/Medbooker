@@ -37,8 +37,8 @@ export class BookingService {
 
   getBookingForEntity(
     entityNo: number,
-    fromDate?: number,
-    toDate?: number
+    fromDate?: string,
+    toDate?: string
   ): Observable<BookingResponse> {
     let params = new HttpParams();
     if (fromDate) params = params.set('fromDate', `eq.${fromDate}`);

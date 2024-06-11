@@ -1,0 +1,29 @@
+<section class="main-section" *ngIf="booking">
+  <div class="left-section">
+    <p>{{ booking.startTime | date : "longDate" }}</p>
+    <p>14:00</p>
+  </div>
+  <div class="right-section">
+    <p class="patient-name">
+      {{ booking.attendees | name : attendeeType.PATIENT }}
+    </p>
+    <div class="buttons">
+      <button
+        nbButton
+        hero
+        status="success"
+        (click)="changeStatus(status.CONFIRMED, booking.id)"
+      >
+        Accept
+      </button>
+      <button
+        nbButton
+        hero
+        status="danger"
+        (click)="changeStatus(status.DECLINED, booking.id)"
+      >
+        Reject
+      </button>
+    </div>
+  </div>
+</section>

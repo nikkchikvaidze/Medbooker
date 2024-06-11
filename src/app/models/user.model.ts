@@ -12,5 +12,5 @@ export interface SupabaseUser {
 }
 export enum Roles {
   Patient = 1000000001,
-  Doctor = 1000000004,
+  Doctor = 1100000222,
 }

@@ -1,19 +1,19 @@
-.buttons {
-  .dashboard,
-  .doctors,
-  .upcoming,
-  .records {
-    margin-top: 15px;
-    color: rgb(34, 34, 34);
-    width: 210px;
-    text-transform: capitalize;
-    &:hover {
-      color: white;
-      background-color: rgb(34, 34, 34);
+@import "../../shared/custom-ui-styles/buttons/second-button";
+
+:host {
+  .buttons {
+    button {
+      @include second-button;
+      width: 210px;
+      margin-bottom: 15px;
+      font-size: 10px;
+      font-weight: bolder;
     }
-    &:focus {
-      color: white;
-      background-color: rgb(34, 34, 34);
+    div {
+      .activated {
+        background-color: #53e3a6 !important;
+        color: white !important;
+      }
     }
   }
 }

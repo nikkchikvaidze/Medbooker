@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DoctorService } from 'src/app/services/doctor.service';
+import { Roles } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,11 +8,16 @@ import { DoctorService } from 'src/app/services/doctor.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private doctorService: DoctorService) {}
+  role = Roles;
+  roleFromEntity: number | undefined;
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.doctorService.getAllDoctors().subscribe((x) => console.log(x));
-
-    this.doctorService.getSingleDoctor(1002).subscribe(console.log);
+    this.authService.getAuthState().subscribe((session) => {
+      if (session?.user) {
+        this.roleFromEntity = session.user.user_metadata['entityNo'];
+      }
+    });
   }
 }
