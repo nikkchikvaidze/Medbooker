@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { BASE_URL } from '../shared';
 import {
   Booking,
@@ -9,19 +8,12 @@ import {
   BookingStatusUpdateRequest,
 } from '../models';
 import { Observable } from 'rxjs';
+import { httpOptions } from '../shared/utils/httpoptions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookingService {
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      apikey: environment.SUPABASE_API_KEY,
-      Authorization: `Bearer ${environment.SUPABASE_API_KEY}`,
-    }),
-  };
-
   constructor(
     private http: HttpClient,
     @Inject(BASE_URL) private base_url: string
@@ -46,7 +38,7 @@ export class BookingService {
     return this.http.get<BookingResponse>(
       `${this.full_Url}/attendee/${entityNo}`,
       {
-        headers: this.httpOptions.headers,
+        headers: httpOptions.headers,
         params,
       }
     );
