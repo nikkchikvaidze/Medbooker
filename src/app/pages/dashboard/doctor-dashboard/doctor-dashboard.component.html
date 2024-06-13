@@ -1,1 +1,29 @@
-<p>doctor-dashboard works!</p>
+<nb-layout>
+  <nb-layout-column class="colored-column-warning left-column">
+    <nb-card class="first-card" accent="success">
+      <nb-card-header routerLink="/shell/patients"
+        >Consultation requests</nb-card-header
+      >
+      <nb-card-body *ngIf="bookings$ | async as bookings">
+        <ng-container *ngFor="let booking of bookings">
+          <app-request-card
+            [booking]="booking"
+            (statusChange)="onStatusChange($event)"
+          ></app-request-card>
+        </ng-container>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+  <nb-layout-column class="colored-column-danger right-column">
+    <nb-card
+      class="first-card"
+      accent="success"
+      routerLink="/shell/upcoming-consultations"
+    >
+      <nb-card-header>Upcoming consultations</nb-card-header>
+    </nb-card>
+    <nb-card class="second-card" accent="success" routerLink="/shell/patients">
+      <nb-card-header>Patients</nb-card-header>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

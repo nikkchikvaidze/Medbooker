@@ -1,0 +1,35 @@
+nb-layout {
+  .right-column {
+    nb-card {
+      height: 120px;
+    }
+  }
+  nb-card-header {
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    border-bottom: none;
+    text-align: center;
+  }
+  .left-column {
+    .first-card {
+      cursor: default;
+      nb-card-header {
+        border-bottom: inherit;
+      }
+    }
+    nb-card-body {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+}
+
+.first-card,
+.second-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

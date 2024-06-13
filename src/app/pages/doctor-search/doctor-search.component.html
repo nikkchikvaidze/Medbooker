@@ -1,1 +1,24 @@
-<p>doctor-search works!</p>
+<nb-layout>
+  <nb-layout-column>MAP</nb-layout-column>
+  <nb-layout-column>
+    <input
+      type="text"
+      nbInput
+      fullWidth
+      status="success"
+      placeholder="Search Doctors"
+      [formControl]="searchInput"
+    />
+    <section *ngIf="doctors$ | async as doctors">
+      <nb-card accent="success" *ngFor="let doctor of doctors">
+        <nb-card-header>
+          {{ doctor.firstName }} {{ doctor.lastName }}
+          <p>{{ doctor.practiceName }}</p>
+        </nb-card-header>
+        <nb-card-body>
+          <button nbButton outline status="success">Book</button>
+        </nb-card-body>
+      </nb-card>
+    </section>
+  </nb-layout-column>
+</nb-layout>
