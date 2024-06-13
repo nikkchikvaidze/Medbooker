@@ -36,10 +36,13 @@ export class DoctorService {
     });
   }
 
-  searchForDoctor(firstName: string, lastName: string): Observable<Doctor[]> {
-    const params = new HttpParams()
-      .set('firstName', `eq.${firstName}`)
-      .set('lastName', `eq.${lastName}`);
+  searchForDoctor(
+    firstName: string | undefined,
+    lastName: string | undefined
+  ): Observable<Doctor[]> {
+    let params = new HttpParams();
+    if (firstName) params = params.set('firstName', `like.%${firstName}%`);
+    if (lastName) params = params.set('lastName', `like.%${lastName}%`);
     return this.http.get<Doctor[]>(`${this.full_Url}`, {
       headers: this.httpOptions.headers,
       params,

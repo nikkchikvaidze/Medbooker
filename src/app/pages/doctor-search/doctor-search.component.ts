@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, debounceTime, switchMap, tap } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { DoctorService } from 'src/app/services';
@@ -13,25 +13,40 @@ import { capitalize } from 'src/app/shared/utils/capitalize';
 export class DoctorSearchComponent implements OnInit {
   constructor(private doctorService: DoctorService, private fb: FormBuilder) {}
 
-  searchInput = new FormControl();
+  searchForm: FormGroup | undefined;
   doctors$: Observable<Doctor[]> | undefined;
 
   ngOnInit(): void {
     this.loadAllDoctors();
-
-    this.searchInput.valueChanges.pipe(
-      debounceTime(1000),
-      switchMap((value) => {
-        const [firstName, lastName] = value.toLowerCase().trim().split(' ');
-        return this.doctorService.searchForDoctor(
-          capitalize(firstName),
-          capitalize(lastName)
-        );
-      })
-    );
+    this.createSearchForm();
+    this.getSearchFormValues();
   }
 
   loadAllDoctors(): void {
     this.doctors$ = this.doctorService.getAllDoctors();
+  }
+
+  createSearchForm() {
+    this.searchForm = new FormGroup({
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+    });
+  }
+
+  getSearchFormValues() {
+    this.searchForm?.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(({ firstName, lastName }) => {
+        if (firstName === '' && lastName === '') {
+          this.loadAllDoctors();
+        } else {
+          const firstname = capitalize(firstName?.toLowerCase());
+          const lastname = capitalize(lastName?.toLowerCase());
+          this.doctors$ = this.doctorService.searchForDoctor(
+            firstname,
+            lastname
+          );
+        }
+      });
   }
 }

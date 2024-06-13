@@ -1,14 +1,26 @@
 <nb-layout>
   <nb-layout-column>MAP</nb-layout-column>
   <nb-layout-column>
-    <input
-      type="text"
-      nbInput
-      fullWidth
-      status="success"
-      placeholder="Search Doctors"
-      [formControl]="searchInput"
-    />
+    <section *ngIf="searchForm" class="first-section">
+      <form [formGroup]="searchForm">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          status="success"
+          placeholder="Enter Firstname"
+          formControlName="firstName"
+        />
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          status="success"
+          placeholder="Enter Lastname"
+          formControlName="lastName"
+        />
+      </form>
+    </section>
     <section *ngIf="doctors$ | async as doctors">
       <nb-card accent="success" *ngFor="let doctor of doctors">
         <nb-card-header>
