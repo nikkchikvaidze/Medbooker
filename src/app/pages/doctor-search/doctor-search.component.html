@@ -28,7 +28,14 @@
           <p>{{ doctor.practiceName }}</p>
         </nb-card-header>
         <nb-card-body>
-          <button nbButton outline status="success">Book</button>
+          <button
+            nbButton
+            outline
+            status="success"
+            (click)="doctorBook(doctor)"
+          >
+            Book
+          </button>
         </nb-card-body>
       </nb-card>
     </section>

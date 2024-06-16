@@ -1,12 +1,37 @@
 nb-layout {
   nb-layout-column {
+    padding: 0 !important;
+    width: 30%;
+
     input {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      width: 100%;
     }
-    nb-card-body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+    section {
+      nb-card {
+        width: 100%;
+      }
+      nb-card-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
+}
+
+.first-column {
+  border-radius: 10px;
+}
+.second-column {
+  margin-left: 30px;
+  padding-top: 0 !important;
+}
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+.first-section {
+  margin-bottom: 10px;
 }

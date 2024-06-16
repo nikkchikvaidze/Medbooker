@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable, debounceTime, switchMap, tap } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { DoctorService } from 'src/app/services';
@@ -11,7 +12,11 @@ import { capitalize } from 'src/app/shared/utils/capitalize';
   styleUrls: ['./doctor-search.component.scss'],
 })
 export class DoctorSearchComponent implements OnInit {
-  constructor(private doctorService: DoctorService, private fb: FormBuilder) {}
+  constructor(
+    private doctorService: DoctorService,
+    private fb: FormBuilder,
+    private route: Router
+  ) {}
 
   searchForm: FormGroup | undefined;
   doctors$: Observable<Doctor[]> | undefined;
@@ -35,7 +40,7 @@ export class DoctorSearchComponent implements OnInit {
 
   getSearchFormValues() {
     this.searchForm?.valueChanges
-      .pipe(debounceTime(1000))
+      .pipe(debounceTime(1500))
       .subscribe(({ firstName, lastName }) => {
         if (firstName === '' && lastName === '') {
           this.loadAllDoctors();
@@ -48,5 +53,9 @@ export class DoctorSearchComponent implements OnInit {
           );
         }
       });
+  }
+
+  doctorBook(doctor: Doctor) {
+    this.route.navigate([`shell/booking/`, doctor.entityNo]);
   }
 }

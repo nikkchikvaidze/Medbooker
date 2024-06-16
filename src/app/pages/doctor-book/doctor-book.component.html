@@ -1,1 +1,29 @@
-<p>doctor-book works!</p>
+<nb-layout *ngIf="doctor$ | async as doctor">
+  <nb-layout-column>
+    <nb-card accent="success">
+      <nb-card-header>
+        {{ doctor.firstName + " " + doctor.lastName }}
+        <p>{{ doctor.practiceName }}</p>
+      </nb-card-header>
+      <nb-card-body>
+        <input
+          nbInput
+          placeholder="Pick Date"
+          [nbDatepicker]="dateTimePicker"
+          [(ngModel)]="pickedTime"
+        />
+        <nb-date-timepicker
+          #dateTimePicker
+          singleColumn
+          [step]="30"
+          [min]="today"
+          class="datepicker-background-color"
+        >
+        </nb-date-timepicker>
+        <button nbButton status="success" (click)="bookDoctor(doctor)">
+          Book
+        </button>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

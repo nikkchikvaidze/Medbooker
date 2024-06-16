@@ -22,11 +22,12 @@ import { AuthModule } from './auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BASE_URL } from './shared';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NbCardModule,
   NbDatepickerModule,
   NbInputModule,
+  NbTimepickerModule,
   NbUserModule,
 } from '@nebular/theme';
 
@@ -49,6 +50,7 @@ import {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     SharedModule,
     AuthModule,
@@ -56,6 +58,7 @@ import {
     ReactiveFormsModule,
     NbCardModule,
     NbDatepickerModule.forRoot(),
+    NbTimepickerModule.forRoot(),
     NbInputModule,
     NbUserModule,
   ],
