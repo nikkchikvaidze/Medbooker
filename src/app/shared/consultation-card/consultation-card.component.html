@@ -1,0 +1,14 @@
+<nb-card accent="success" *ngIf="booking" (click)="getBooking(booking)">
+  <nb-card-header>
+    <ng-container *ngIf="entity == role.Patient">
+      {{ booking.attendees | name : attendee.PROVIDER }} |
+      {{ practiceName }}
+    </ng-container>
+    <ng-container *ngIf="entity == role.Doctor">
+      {{ booking.attendees | name : attendee.PATIENT }}
+    </ng-container>
+  </nb-card-header>
+  <nb-card-body>
+    {{ booking.startTime | date : "medium" }}
+  </nb-card-body>
+</nb-card>

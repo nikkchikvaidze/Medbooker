@@ -23,6 +23,7 @@ export class UpcomingConsultationsComponent implements OnInit {
   attendee!: AttendeeType;
   role!: Roles;
   showCard = false;
+
   constructor(
     private bookingService: BookingService,
     private doctorService: DoctorService,
@@ -72,9 +73,11 @@ export class UpcomingConsultationsComponent implements OnInit {
         })
       );
   }
+
   getSingleBooking(booking: Booking) {
     this.selectedBooking = booking;
   }
+
   onStatusChange(status: StatusChange) {
     const bookingUpdateBody: BookingStatusUpdateRequest = {
       bookingStatus: status.status,

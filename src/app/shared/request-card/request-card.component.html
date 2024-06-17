@@ -1,7 +1,7 @@
 <section class="main-section" *ngIf="booking">
   <div class="left-section">
     <p>{{ booking.startTime | date : "longDate" }}</p>
-    <p>14:00</p>
+    <p>{{ booking.startTime | date : "shortTime" }}</p>
   </div>
   <div class="right-section">
     <p class="patient-name">

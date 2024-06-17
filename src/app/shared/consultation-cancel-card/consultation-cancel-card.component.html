@@ -1,0 +1,28 @@
+<ng-container *ngIf="showCard">
+  <h5>{{ consultationTitle }}</h5>
+  <h6>Status: {{ selectedBooking?.status }}</h6>
+  <nb-card status="success" *ngIf="selectedBooking">
+    <ng-container>
+      <nb-card-header>
+        <ng-container *ngIf="entity == role.Patient">
+          {{ selectedBooking.attendees | name : attendee.PROVIDER }} |
+          {{ practiceName }}
+        </ng-container>
+        <ng-container *ngIf="entity == role.Doctor">
+          {{ selectedBooking.attendees | name : attendee.PATIENT }}
+        </ng-container>
+      </nb-card-header>
+      <nb-card-body>
+        {{ selectedBooking.startTime | date : "medium" }}
+        <button
+          *ngIf="cancelButton"
+          nbButton
+          status="danger"
+          (click)="changeStatus(status.CANCELLED, selectedBooking.id)"
+        >
+          Cancel booking
+        </button>
+      </nb-card-body>
+    </ng-container>
+  </nb-card>
+</ng-container>
