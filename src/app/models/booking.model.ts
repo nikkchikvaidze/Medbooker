@@ -33,6 +33,8 @@ export interface BookingStatusUpdateRequest {
   includeDependent?: boolean;
 }
 
+export type UpcomingBooking = Booking & { practiceName?: string };
+
 export interface StatusChange {
   status: Status;
   id: number;
