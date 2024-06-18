@@ -20,11 +20,9 @@ export class ConsultationCardComponent implements OnInit {
   constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService
-      .getUser()
-      .subscribe(
-        (user) => (this.entity = user?.data.user?.user_metadata['entityNo'])
-      );
+    this.authService.getUser().subscribe((user) => {
+      this.entity = user?.['entityNo'];
+    });
   }
   getBooking(booking: Booking) {
     this.chosenBooking.emit(booking);

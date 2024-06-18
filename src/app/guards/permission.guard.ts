@@ -19,10 +19,8 @@ export class PermissionGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.authService.getUser().pipe(
-      map((userState) => {
-        if (
-          userState?.data.user?.user_metadata['entityNo'] === route.data['role']
-        ) {
+      map((user) => {
+        if (user?.['entityNo'] === route.data['role']) {
           return true;
         }
         this.router.navigate(['shell/dashboard']);

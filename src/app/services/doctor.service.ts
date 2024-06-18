@@ -20,9 +20,9 @@ export class DoctorService {
     return this.http.get<Doctor[]>(`${this.full_Url}`, httpOptions);
   }
 
-  getSingleDoctor(entityNo: number): Observable<Doctor> {
+  getSingleDoctor(entityNo: number): Observable<Doctor[]> {
     const params = new HttpParams().set('entityNo', `eq.${entityNo}`);
-    return this.http.get<Doctor>(`${this.full_Url}`, {
+    return this.http.get<Doctor[]>(`${this.full_Url}`, {
       headers: httpOptions.headers,
       params,
     });

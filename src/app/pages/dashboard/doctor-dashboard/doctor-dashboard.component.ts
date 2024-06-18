@@ -29,10 +29,7 @@ export class DoctorDashboardComponent implements OnInit {
     this.bookings$ = this.authService.getUser().pipe(
       switchMap((user) => {
         return this.bookingService
-          .getBookingForEntity(
-            user?.data.user?.user_metadata['entityNo'],
-            new Date().toISOString()
-          )
+          .getBookingForEntity(user?.['entityNo'], new Date().toISOString())
           .pipe(
             map((x) => x.bookingMap),
             map((x) =>

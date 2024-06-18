@@ -23,11 +23,9 @@ export class ConsultationCancelCardComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService
-      .getUser()
-      .subscribe(
-        (user) => (this.entity = user?.data.user?.user_metadata['entityNo'])
-      );
+    this.authService.getUser().subscribe((user) => {
+      this.entity = user?.['entityNo'];
+    });
     this.showButton();
   }
 

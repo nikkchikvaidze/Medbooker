@@ -15,7 +15,7 @@ import { AuthService, BookingService } from 'src/app/services';
 })
 export class ConsultationRequestsComponent implements OnInit {
   bookings$: Observable<Booking[]> | undefined;
-  entityNo!: number;
+  entityNo: number | undefined;
 
   constructor(
     private bookingService: BookingService,
@@ -27,26 +27,26 @@ export class ConsultationRequestsComponent implements OnInit {
   }
 
   loadingBookings(): void {
-    this.authService
-      .getUser()
-      .subscribe(
-        (user) => (this.entityNo = user?.data.user?.user_metadata['entityNo'])
-      );
-    this.bookings$ = this.bookingService
-      .getBookingForEntity(this.entityNo, new Date().toISOString())
-      .pipe(
-        map((x) => x.bookingMap),
-        map((x) =>
-          Object.keys(x)
-            .map((key) => x[key])
-            .flat()
-            .sort(
-              (a, b) =>
-                Number(new Date(a.startTime)) - Number(new Date(b.startTime))
-            )
-        ),
-        map((x) => x.filter((x) => x.status === Status.TENTATIVE))
-      );
+    this.authService.getUser().subscribe((user) => {
+      this.entityNo = user?.['entityNo'];
+    });
+    if (this.entityNo) {
+      this.bookings$ = this.bookingService
+        .getBookingForEntity(this.entityNo, new Date().toISOString())
+        .pipe(
+          map((x) => x.bookingMap),
+          map((x) =>
+            Object.keys(x)
+              .map((key) => x[key])
+              .flat()
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.startTime)) - Number(new Date(b.startTime))
+              )
+          ),
+          map((x) => x.filter((x) => x.status === Status.TENTATIVE))
+        );
+    }
   }
 
   onStatusChange(status: StatusChange) {

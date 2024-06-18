@@ -30,23 +30,22 @@ export class DoctorBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService
-      .getAuthState()
-      .pipe(map((user) => user?.user.user_metadata))
-      .subscribe((user) => {
-        if (user) {
-          const userInfo = {
-            entityNo: user['entityNo'],
-            firstName: user['firstName'],
-            lastName: user['lastName'],
-          };
-          this.currentUser = userInfo;
-        }
-      });
+    this.authService.getUser().subscribe((user) => {
+      if (user) {
+        const userInfo = {
+          entityNo: user['entityNo'],
+          firstName: user['firstName'],
+          lastName: user['lastName'],
+        };
+        this.currentUser = userInfo;
+      }
+    });
     let currentEntityNo = Number(
       this.activatedRoute.snapshot.paramMap.get('id')
     );
-    this.doctor$ = this.doctorService.getSingleDoctor(currentEntityNo);
+    this.doctor$ = this.doctorService
+      .getSingleDoctor(currentEntityNo)
+      .pipe(map((value) => value[0]));
   }
 
   // TODO: This needs some adjustments

@@ -7,9 +7,9 @@ import {
   AuthTokenResponsePassword,
   Session,
   SupabaseClient,
-  UserResponse,
+  UserMetadata,
 } from '@supabase/supabase-js';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { User } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -30,8 +30,10 @@ export class AuthService {
     return this.authState.asObservable();
   }
 
-  public getUser(): Observable<UserResponse | null> {
-    return from(this.supabase.auth.getUser());
+  public getUser(): Observable<UserMetadata | undefined> {
+    return from(this.supabase.auth.getUser()).pipe(
+      map((data) => data.data.user?.user_metadata)
+    );
   }
 
   public signUp(

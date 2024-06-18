@@ -19,8 +19,8 @@ export class AnonymGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.authService.getUser().pipe(
-      map((userState) => {
-        if (userState?.data.user) {
+      map((user) => {
+        if (user) {
           return true;
         }
         this.router.navigate(['login']);

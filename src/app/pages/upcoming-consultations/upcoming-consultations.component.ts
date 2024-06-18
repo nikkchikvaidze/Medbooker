@@ -31,11 +31,9 @@ export class UpcomingConsultationsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService
-      .getUser()
-      .subscribe(
-        (user) => (this.role = user?.data.user?.user_metadata['entityNo'])
-      );
+    this.authService.getUser().subscribe((user) => {
+      this.role = user?.['entityNo'];
+    });
     this.loadUpcomingBookings();
   }
 
