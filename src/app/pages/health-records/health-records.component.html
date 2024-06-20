@@ -1,1 +1,23 @@
-<p>health-records works!</p>
+<nb-layout>
+  <nb-layout-column class="first-column">
+    <ng-container *ngIf="passedBookings$ | async as bookings">
+      <app-consultation-card
+        *ngFor="let booking of bookings"
+        [booking]="booking"
+        [fullname]="booking.attendees | name : attendee"
+        [practiceName]="booking.practiceName"
+        (chosenBooking)="getSingleBooking($event)"
+      >
+      </app-consultation-card>
+    </ng-container>
+  </nb-layout-column>
+  <nb-layout-column class="second-column">
+    <ng-container *ngIf="selectedBooking">
+      <app-consultation-cancel-card
+        [selectedBooking]="selectedBooking"
+        [practiceName]="selectedBooking.practiceName"
+      >
+      </app-consultation-cancel-card>
+    </ng-container>
+  </nb-layout-column>
+</nb-layout>

@@ -1,1 +1,73 @@
-<p>patients works!</p>
+<nb-layout>
+  <nb-layout-column class="first-column">
+    <section *ngIf="searchForm" class="first-section">
+      <form [formGroup]="searchForm">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          status="success"
+          placeholder="Enter Firstname"
+          formControlName="firstName"
+        />
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          status="success"
+          placeholder="Enter Lastname"
+          formControlName="lastName"
+        />
+      </form>
+    </section>
+    <section *ngIf="patients$ | async as patients">
+      <nb-card accent="success" *ngFor="let patient of patients">
+        <nb-card-header>
+          {{ patient.firstName }} {{ patient.lastName }}
+        </nb-card-header>
+        <nb-card-body>
+          <button
+            nbButton
+            outline
+            status="success"
+            (click)="showInformation(patient)"
+          >
+            Create appointment
+          </button>
+        </nb-card-body>
+      </nb-card>
+    </section>
+  </nb-layout-column>
+  <nb-layout-column class="second-column" *ngIf="showAdditionalInformation">
+    <ng-container *ngIf="selectedPatient">
+      <nb-card accent="success">
+        <nb-card-header>
+          {{ selectedPatient.firstName + " " + selectedPatient.lastName }}
+        </nb-card-header>
+        <nb-card-body>
+          <input
+            nbInput
+            placeholder="Pick Date"
+            [nbDatepicker]="dateTimePicker"
+            [(ngModel)]="pickedTime"
+          />
+          <nb-date-timepicker
+            #dateTimePicker
+            singleColumn
+            [step]="30"
+            [min]="today"
+            class="datepicker-background-color"
+          >
+          </nb-date-timepicker>
+          <button
+            nbButton
+            status="success"
+            (click)="createAppointment(selectedPatient)"
+          >
+            Create appointment
+          </button>
+        </nb-card-body>
+      </nb-card>
+    </ng-container>
+  </nb-layout-column>
+</nb-layout>

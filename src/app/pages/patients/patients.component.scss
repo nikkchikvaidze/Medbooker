@@ -1,0 +1,17 @@
+nb-layout {
+  input {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  nb-card {
+    nb-card-header {
+      text-align: center;
+    }
+    nb-card-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+}
