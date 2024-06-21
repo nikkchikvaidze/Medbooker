@@ -1,23 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, map, takeUntil } from 'rxjs';
 import { AttendeeType, Doctor, Patient } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { AuthService, BookingService, DoctorService } from 'src/app/services';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-doctor-book',
   templateUrl: './doctor-book.component.html',
   styleUrls: ['./doctor-book.component.scss'],
 })
-export class DoctorBookComponent implements OnInit {
+export class DoctorBookComponent extends Unsubscribe implements OnInit {
   constructor(
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private doctorService: DoctorService,
     private authService: AuthService,
     private bookingService: BookingService
-  ) {}
+  ) {
+    super();
+  }
 
   doctor$: Observable<Doctor> | undefined;
   // TODO: This needs some adjustments
@@ -30,16 +33,19 @@ export class DoctorBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.getUser().subscribe((user) => {
-      if (user) {
-        const userInfo = {
-          entityNo: user['entityNo'],
-          firstName: user['firstName'],
-          lastName: user['lastName'],
-        };
-        this.currentUser = userInfo;
-      }
-    });
+    this.authService
+      .getUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((user) => {
+        if (user) {
+          const userInfo = {
+            entityNo: user['entityNo'],
+            firstName: user['firstName'],
+            lastName: user['lastName'],
+          };
+          this.currentUser = userInfo;
+        }
+      });
     let currentEntityNo = Number(
       this.activatedRoute.snapshot.paramMap.get('id')
     );

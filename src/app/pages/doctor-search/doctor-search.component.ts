@@ -1,22 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, debounceTime, switchMap, tap } from 'rxjs';
+import { Observable, debounceTime, switchMap, takeUntil, tap } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { DoctorService } from 'src/app/services';
 import { capitalize } from 'src/app/shared/utils/capitalize';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-doctor-search',
   templateUrl: './doctor-search.component.html',
   styleUrls: ['./doctor-search.component.scss'],
 })
-export class DoctorSearchComponent implements OnInit {
+export class DoctorSearchComponent extends Unsubscribe implements OnInit {
   constructor(
     private doctorService: DoctorService,
     private fb: FormBuilder,
     private route: Router
-  ) {}
+  ) {
+    super();
+  }
 
   searchForm: FormGroup | undefined;
   doctors$: Observable<Doctor[]> | undefined;
@@ -40,7 +43,7 @@ export class DoctorSearchComponent implements OnInit {
 
   getSearchFormValues() {
     this.searchForm?.valueChanges
-      .pipe(debounceTime(1500))
+      .pipe(debounceTime(1500), takeUntil(this.unsubscribe$))
       .subscribe(({ firstName, lastName }) => {
         if (firstName === '' && lastName === '') {
           this.loadAllDoctors();

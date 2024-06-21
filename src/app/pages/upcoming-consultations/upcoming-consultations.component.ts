@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, of, switchMap } from 'rxjs';
+import { Observable, map, of, switchMap, takeUntil } from 'rxjs';
 import {
   AttendeeType,
   Booking,
@@ -11,13 +11,17 @@ import {
 import { Roles } from 'src/app/models/user.model';
 import { AuthService, BookingService, DoctorService } from 'src/app/services';
 import { flattenBookings } from 'src/app/shared/utils/helpers.fn';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-upcoming-consultations',
   templateUrl: './upcoming-consultations.component.html',
   styleUrls: ['./upcoming-consultations.component.scss'],
 })
-export class UpcomingConsultationsComponent implements OnInit {
+export class UpcomingConsultationsComponent
+  extends Unsubscribe
+  implements OnInit
+{
   upcomingBookings$: Observable<UpcomingBooking[]> | undefined;
   selectedBooking: UpcomingBooking | undefined;
   attendee!: AttendeeType;
@@ -28,12 +32,17 @@ export class UpcomingConsultationsComponent implements OnInit {
     private bookingService: BookingService,
     private doctorService: DoctorService,
     private authService: AuthService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.authService.getUser().subscribe((user) => {
-      this.role = user?.['entityNo'];
-    });
+    this.authService
+      .getUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((user) => {
+        this.role = user?.['entityNo'];
+      });
     this.loadUpcomingBookings();
   }
 
@@ -41,6 +50,7 @@ export class UpcomingConsultationsComponent implements OnInit {
     this.upcomingBookings$ = this.bookingService
       .getBookingForEntity(this.role, new Date().toISOString(), undefined)
       .pipe(
+        takeUntil(this.unsubscribe$),
         map((bookings) =>
           flattenBookings(bookings)
             .filter((element) => element.status == Status.CONFIRMED)
@@ -84,6 +94,7 @@ export class UpcomingConsultationsComponent implements OnInit {
     };
     this.bookingService
       .updateBooking(status.id, bookingUpdateBody)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.loadUpcomingBookings();
         this.selectedBooking = undefined;

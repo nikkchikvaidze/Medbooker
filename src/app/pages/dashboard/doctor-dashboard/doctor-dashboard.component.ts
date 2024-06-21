@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, map, switchMap, takeUntil } from 'rxjs';
 import {
   Booking,
   BookingStatusUpdateRequest,
@@ -7,17 +7,20 @@ import {
   StatusChange,
 } from 'src/app/models';
 import { AuthService, BookingService } from 'src/app/services';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-doctor-dashboard',
   templateUrl: './doctor-dashboard.component.html',
   styleUrls: ['./doctor-dashboard.component.scss'],
 })
-export class DoctorDashboardComponent implements OnInit {
+export class DoctorDashboardComponent extends Unsubscribe implements OnInit {
   constructor(
     private bookingService: BookingService,
     private authService: AuthService
-  ) {}
+  ) {
+    super();
+  }
 
   bookings$: Observable<Booking[]> | undefined;
 
@@ -27,6 +30,7 @@ export class DoctorDashboardComponent implements OnInit {
 
   loadingBookings() {
     this.bookings$ = this.authService.getUser().pipe(
+      takeUntil(this.unsubscribe$),
       switchMap((user) => {
         return this.bookingService
           .getBookingForEntity(user?.['entityNo'], new Date().toISOString())

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { User, UserMetadata } from '@supabase/supabase-js';
-import { Observable, debounceTime } from 'rxjs';
+import { Observable, debounceTime, takeUntil } from 'rxjs';
 import {
   AttendeeType,
   BookingStatusUpdateRequest,
@@ -11,13 +11,14 @@ import {
 import { Roles } from 'src/app/models/user.model';
 import { AuthService, BookingService } from 'src/app/services';
 import { PatientService } from 'src/app/services/patient.service';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html',
   styleUrls: ['./patients.component.scss'],
 })
-export class PatientsComponent implements OnInit {
+export class PatientsComponent extends Unsubscribe implements OnInit {
   patients$: Observable<Patient[]> | undefined;
   searchForm: FormGroup | undefined;
   selectedPatient: Patient | undefined;
@@ -34,14 +35,19 @@ export class PatientsComponent implements OnInit {
     private patientService: PatientService,
     private bookingService: BookingService,
     private authService: AuthService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loadAllPatients();
     this.createSearchForm();
     this.getSearchFormValues();
 
-    this.authService.getUser().subscribe((user) => (this.currentUser = user));
+    this.authService
+      .getUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((user) => (this.currentUser = user));
   }
 
   loadAllPatients() {
@@ -57,7 +63,7 @@ export class PatientsComponent implements OnInit {
 
   getSearchFormValues() {
     this.searchForm?.valueChanges
-      .pipe(debounceTime(1000))
+      .pipe(takeUntil(this.unsubscribe$), debounceTime(1000))
       .subscribe((value) => {
         if (value.firstName === '' && value.lastName === '') {
           this.loadAllPatients();
@@ -108,17 +114,21 @@ export class PatientsComponent implements OnInit {
       id: 0,
       organiser: Roles.Doctor,
     };
-    this.bookingService.createBooking(appointment).subscribe((x) => {
-      const bookingUpdateBody: BookingStatusUpdateRequest = {
-        bookingStatus: Status.CONFIRMED,
-        comment: '',
-        includeDependent: true,
-      };
-      this.bookingService
-        .updateBooking(x.id, bookingUpdateBody)
-        .subscribe(() => {
-          this.showAdditionalInformation = false;
-        });
-    });
+    this.bookingService
+      .createBooking(appointment)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((x) => {
+        const bookingUpdateBody: BookingStatusUpdateRequest = {
+          bookingStatus: Status.CONFIRMED,
+          comment: '',
+          includeDependent: true,
+        };
+        this.bookingService
+          .updateBooking(x.id, bookingUpdateBody)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => {
+            this.showAdditionalInformation = false;
+          });
+      });
   }
 }

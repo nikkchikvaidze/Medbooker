@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, of, switchMap } from 'rxjs';
+import { Observable, map, of, switchMap, takeUntil } from 'rxjs';
 import { AttendeeType, Booking, Status, UpcomingBooking } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { AuthService, BookingService, DoctorService } from 'src/app/services';
 import { flattenBookings } from 'src/app/shared/utils/helpers.fn';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-health-records',
   templateUrl: './health-records.component.html',
   styleUrls: ['./health-records.component.scss'],
 })
-export class HealthRecordsComponent implements OnInit {
+export class HealthRecordsComponent extends Unsubscribe implements OnInit {
   passedBookings$: Observable<UpcomingBooking[]> | undefined;
   selectedBooking: UpcomingBooking | undefined;
   attendee!: AttendeeType;
@@ -20,7 +21,9 @@ export class HealthRecordsComponent implements OnInit {
     private authService: AuthService,
     private bookingService: BookingService,
     private doctorService: DoctorService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.authService
@@ -34,6 +37,7 @@ export class HealthRecordsComponent implements OnInit {
     this.passedBookings$ = this.bookingService
       .getBookingForEntity(this.role, undefined, new Date().toISOString())
       .pipe(
+        takeUntil(this.unsubscribe$),
         map((bookings) =>
           flattenBookings(bookings)
             .filter((element) => element.status == Status.CONFIRMED)

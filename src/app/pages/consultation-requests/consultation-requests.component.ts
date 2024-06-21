@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, takeUntil } from 'rxjs';
 import {
   Booking,
   BookingStatusUpdateRequest,
@@ -7,29 +7,38 @@ import {
   StatusChange,
 } from 'src/app/models';
 import { AuthService, BookingService } from 'src/app/services';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-consultation-requests',
   templateUrl: './consultation-requests.component.html',
   styleUrls: ['./consultation-requests.component.scss'],
 })
-export class ConsultationRequestsComponent implements OnInit {
+export class ConsultationRequestsComponent
+  extends Unsubscribe
+  implements OnInit
+{
   bookings$: Observable<Booking[]> | undefined;
   entityNo: number | undefined;
 
   constructor(
     private bookingService: BookingService,
     private authService: AuthService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loadingBookings();
   }
 
   loadingBookings(): void {
-    this.authService.getUser().subscribe((user) => {
-      this.entityNo = user?.['entityNo'];
-    });
+    this.authService
+      .getUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((user) => {
+        this.entityNo = user?.['entityNo'];
+      });
     if (this.entityNo) {
       this.bookings$ = this.bookingService
         .getBookingForEntity(this.entityNo, new Date().toISOString())
