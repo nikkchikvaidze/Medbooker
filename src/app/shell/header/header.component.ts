@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/services/auth.service';
+import { capitalize } from 'src/app/shared/utils/capitalize';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,7 @@ export class HeaderComponent implements OnInit {
       if (session?.user) {
         let firstname = session.user.user_metadata['firstName'];
         let lastname = session.user.user_metadata['lastName'];
-        this.fullname = `${firstname} ${lastname}`;
+        this.fullname = `${capitalize(firstname)} ${capitalize(lastname)}`;
       }
     });
   }

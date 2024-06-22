@@ -1,6 +1,6 @@
 <h6>MEDBOOKER</h6>
 <div (window:resize)="resetHiddenBtn()">
-  <p text-paragraph-font-weight>{{ fullname }}</p>
+  <nb-user shape="round" [name]="fullname"></nb-user>
   <button
     *ngIf="showBtn"
     status="basic"
