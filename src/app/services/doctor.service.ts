@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BASE_URL } from '../shared';
-import { Observable } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import { Doctor } from '../models';
 import { httpOptions } from '../shared/utils/httpoptions';
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +12,19 @@ import { httpOptions } from '../shared/utils/httpoptions';
 export class DoctorService {
   constructor(
     private http: HttpClient,
-    @Inject(BASE_URL) private base_url: string
+    @Inject(BASE_URL) private base_url: string,
+    private supabaseService: SupabaseService
   ) {}
 
   full_Url = `${this.base_url}/doctors`;
 
   getAllDoctors(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(`${this.full_Url}`, httpOptions);
+    const promise = this.supabaseService.supabase.from('doctors').select('*');
+    return from(promise).pipe(
+      map((response) => {
+        return response.data ?? [];
+      })
+    );
   }
 
   getSingleDoctor(entityNo: number): Observable<Doctor[]> {
