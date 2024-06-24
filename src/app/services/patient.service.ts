@@ -41,13 +41,15 @@ export class PatientService {
     );
   }
 
-  searchForPatient(firstName: string, lastName: string): Observable<Patient[]> {
-    const params = new HttpParams()
-      .set('firstName', `eq.${firstName}`)
-      .set('lastName', `eq.${lastName}`);
-    return this.http.get<Patient[]>(`${this.full_Url}`, {
-      headers: httpOptions.headers,
-      params,
-    });
+  searchForPatient(
+    firstName: string | undefined,
+    lastName: string | undefined
+  ): Observable<Patient[]> {
+    let promise = this.supabaseService.supabase.from('patients').select('*');
+
+    if (firstName) promise = promise.like('firstName', `%${firstName}%`);
+    if (lastName) promise = promise.like('lastName', `%${lastName}%`);
+
+    return from(promise).pipe(map((response) => response.data ?? []));
   }
 }

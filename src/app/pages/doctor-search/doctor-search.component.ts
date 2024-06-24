@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, debounceTime, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, debounceTime, takeUntil } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { DoctorService } from 'src/app/services';
 import { capitalize } from 'src/app/shared/utils/capitalize';

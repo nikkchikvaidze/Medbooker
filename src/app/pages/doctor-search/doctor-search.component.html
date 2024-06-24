@@ -21,23 +21,26 @@
         />
       </form>
     </section>
-    <section *ngIf="doctors$ | async as doctors">
-      <nb-card accent="success" *ngFor="let doctor of doctors">
-        <nb-card-header>
-          {{ doctor.firstName }} {{ doctor.lastName }}
-          <p>{{ doctor.practiceName }}</p>
-        </nb-card-header>
-        <nb-card-body>
-          <button
-            nbButton
-            outline
-            status="success"
-            (click)="doctorBook(doctor)"
-          >
-            Book
-          </button>
-        </nb-card-body>
-      </nb-card>
-    </section>
+    <ng-container *ngIf="doctors$ | async as doctors">
+      <p *ngIf="doctors.length === 0">No results found</p>
+      <section *ngIf="doctors.length > 0">
+        <nb-card accent="success" *ngFor="let doctor of doctors">
+          <nb-card-header>
+            {{ doctor.firstName }} {{ doctor.lastName }}
+            <p>{{ doctor.practiceName }}</p>
+          </nb-card-header>
+          <nb-card-body>
+            <button
+              nbButton
+              outline
+              status="success"
+              (click)="doctorBook(doctor)"
+            >
+              Book
+            </button>
+          </nb-card-body>
+        </nb-card>
+      </section>
+    </ng-container>
   </nb-layout-column>
 </nb-layout>
