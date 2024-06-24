@@ -28,11 +28,17 @@ export class DoctorService {
   }
 
   getSingleDoctor(entityNo: number): Observable<Doctor[]> {
-    const params = new HttpParams().set('entityNo', `eq.${entityNo}`);
-    return this.http.get<Doctor[]>(`${this.full_Url}`, {
-      headers: httpOptions.headers,
-      params,
-    });
+    const promise = this.supabaseService.supabase
+      .from('doctors')
+      .select()
+      .eq('entityNo', entityNo);
+    return from(promise).pipe(
+      map((response) => {
+        if (response.data) {
+          return response.data[0];
+        }
+      })
+    );
   }
 
   searchForDoctor(

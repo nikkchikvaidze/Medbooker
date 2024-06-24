@@ -68,7 +68,6 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
         if (value.firstName === '' && value.lastName === '') {
           this.loadAllPatients();
         } else {
-          console.log(value.firstName, value.lastName);
           this.patients$ = this.patientService.searchForPatient(
             value.firstName,
             value.lastName
