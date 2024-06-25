@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, debounceTime, takeUntil } from 'rxjs';
+import { Observable, debounceTime, takeUntil, tap } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { DoctorService } from 'src/app/services';
+import { MapComponent } from 'src/app/shared/map/map.component';
 import { capitalize } from 'src/app/shared/utils/capitalize';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
@@ -23,6 +24,7 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
 
   searchForm: FormGroup | undefined;
   doctors$: Observable<Doctor[]> | undefined;
+  @ViewChild(MapComponent) map: MapComponent | undefined;
 
   ngOnInit(): void {
     this.loadAllDoctors();
@@ -31,7 +33,20 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
   }
 
   loadAllDoctors(): void {
-    this.doctors$ = this.doctorService.getAllDoctors();
+    this.doctors$ = this.doctorService.getAllDoctors().pipe(
+      tap((doctors) => {
+        this.map?.clearMarkers();
+        doctors.forEach((doctor) => {
+          let { lat, lng, firstName, lastName } = {
+            firstName: doctor.firstName,
+            lastName: doctor.lastName,
+            lat: Math.random() * (41.916667 - 41.316667) + 41.316667,
+            lng: Math.random() * (44.983333 - 44.383333) + 44.383333,
+          };
+          this.map?.setMarker(lat, lng, firstName, lastName);
+        });
+      })
+    );
   }
 
   createSearchForm() {
@@ -50,10 +65,22 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
         } else {
           const firstname = capitalize(firstName?.toLowerCase());
           const lastname = capitalize(lastName?.toLowerCase());
-          this.doctors$ = this.doctorService.searchForDoctor(
-            firstname,
-            lastname
-          );
+          this.doctors$ = this.doctorService
+            .searchForDoctor(firstname, lastname)
+            .pipe(
+              tap((doctors) => {
+                this.map?.clearMarkers();
+                doctors.forEach((doctor) => {
+                  let { lat, lng, firstName, lastName } = {
+                    firstName: doctor.firstName,
+                    lastName: doctor.lastName,
+                    lat: Math.random() * (41.916667 - 41.316667) + 41.316667,
+                    lng: Math.random() * (44.983333 - 44.383333) + 44.383333,
+                  };
+                  this.map?.setMarker(lat, lng, firstName, lastName);
+                });
+              })
+            );
         }
       });
   }
