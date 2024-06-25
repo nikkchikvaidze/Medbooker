@@ -29,7 +29,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/@nebular/theme/styles/prebuilt/default.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": []
           },

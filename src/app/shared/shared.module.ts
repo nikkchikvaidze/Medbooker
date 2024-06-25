@@ -7,6 +7,7 @@ import { RequestCardComponent } from './request-card/request-card.component';
 import { NbCardModule } from '@nebular/theme';
 import { ConsultationCancelCardComponent } from './consultation-cancel-card/consultation-cancel-card.component';
 import { ConsultationCardComponent } from './consultation-card/consultation-card.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { ConsultationCardComponent } from './consultation-card/consultation-card
     RequestCardComponent,
     ConsultationCancelCardComponent,
     ConsultationCardComponent,
+    MapComponent,
   ],
   imports: [CommonModule, NebularUiModule, FontAwesomeModule, NbCardModule],
   exports: [
@@ -23,6 +25,7 @@ import { ConsultationCardComponent } from './consultation-card/consultation-card
     NamePipe,
     ConsultationCancelCardComponent,
     ConsultationCardComponent,
+    MapComponent,
   ],
 })
 export class SharedModule {}

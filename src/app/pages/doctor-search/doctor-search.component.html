@@ -1,5 +1,7 @@
 <nb-layout>
-  <nb-layout-column>MAP</nb-layout-column>
+  <nb-layout-column>
+    <app-map></app-map>
+  </nb-layout-column>
   <nb-layout-column>
     <section *ngIf="searchForm" class="first-section">
       <form [formGroup]="searchForm">
