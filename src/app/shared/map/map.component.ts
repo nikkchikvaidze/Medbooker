@@ -2,11 +2,12 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit,
+  Input,
   ViewChild,
 } from '@angular/core';
 import { Browser, Map, Marker, icon, map, marker, tileLayer } from 'leaflet';
 import { environment } from 'src/environments/environment';
+import { MapCoords } from './map-coords.model';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -28,11 +29,11 @@ Marker.prototype.options.icon = iconDefault;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements AfterViewInit {
   private map!: Map;
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
-  private initialState = { lng: 50, lat: 49, zoom: 4 };
+  @Input() initialState!: MapCoords;
   private isRetina = Browser.retina;
   private baseUrl = `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${environment.MAP_API_KEY}`;
   private retinaUrl = `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}@2x.png?apiKey=${environment.MAP_API_KEY}`;
@@ -40,10 +41,10 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   constructor() {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.map = map(this.mapContainer?.nativeElement).setView(
       [this.initialState.lat, this.initialState.lng],
-      4
+      this.initialState.zoom
     );
 
     tileLayer(this.isRetina ? this.retinaUrl : this.baseUrl, {
@@ -53,7 +54,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     } as any).addTo(this.map);
   }
 
-  ngOnInit() {}
+  setViewCenter(lat: number, lng: number): void {
+    this.map.flyTo([lat, lng], this.initialState.zoom, {
+      animate: true,
+      easeLinearity: 1,
+    });
+  }
 
   setMarker(
     lat: number,

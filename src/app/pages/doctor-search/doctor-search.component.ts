@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, debounceTime, takeUntil, tap } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { DoctorService } from 'src/app/services';
+import { MapCoords } from 'src/app/shared/map/map-coords.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { capitalize } from 'src/app/shared/utils/capitalize';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
@@ -25,6 +26,7 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
   searchForm: FormGroup | undefined;
   doctors$: Observable<Doctor[]> | undefined;
   @ViewChild(MapComponent) map: MapComponent | undefined;
+  public initialState: MapCoords = { lng: 50, lat: 49, zoom: 4 };
 
   ngOnInit(): void {
     this.loadAllDoctors();
@@ -45,6 +47,7 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
           };
           this.map?.setMarker(lat, lng, firstName, lastName);
         });
+        this.map?.setViewCenter(this.initialState.lat, this.initialState.lng);
       })
     );
   }
@@ -77,6 +80,7 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
                     lat: Math.random() * (41.916667 - 41.316667) + 41.316667,
                     lng: Math.random() * (44.983333 - 44.383333) + 44.383333,
                   };
+                  this.map?.setViewCenter(lat, lng);
                   this.map?.setMarker(lat, lng, firstName, lastName);
                 });
               })
