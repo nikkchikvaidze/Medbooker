@@ -55,7 +55,7 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
   }
 
   // TODO: This needs some adjustments
-  bookDoctor(doctor: Doctor) {
+  bookDoctor(doctor: Doctor): void {
     if (!this.pickedTime) return;
     let startDate = new Date(this.pickedTime);
     let endDate = new Date(startDate.getTime() + 30 * 60000);

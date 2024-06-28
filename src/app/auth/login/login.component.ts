@@ -25,14 +25,14 @@ export class LoginComponent implements OnInit {
     this.loginInitForm();
   }
 
-  loginInitForm() {
+  loginInitForm(): void {
     this.loginForm = this.fb.group({
       Email: ['', [Validators.required, Validators.email]],
       Password: ['', Validators.required],
     });
   }
 
-  isValid(controlName: string) {
+  isValid(controlName: string): boolean | undefined {
     return (
       this.loginForm?.controls[controlName]?.valid &&
       this.isSubmitted &&
@@ -40,21 +40,21 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  isInvalid(controlName: string) {
+  isInvalid(controlName: string): boolean {
     return (
       (this.loginForm?.controls[controlName]?.invalid && this.isSubmitted) ||
       this.isError
     );
   }
 
-  getErrorMessage(controlName: string) {
+  getErrorMessage(controlName: string): string {
     const control = this.loginForm?.controls[controlName];
     if (control?.errors?.['required']) return `${controlName} is required`;
     if (control?.errors?.['email']) return 'Please enter the valid Email';
     return '';
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.isSubmitted = true;
     if (!this.loginForm?.valid) return;
     this.authService

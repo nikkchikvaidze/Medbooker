@@ -58,7 +58,7 @@ export class ConsultationRequestsComponent
     }
   }
 
-  onStatusChange(status: StatusChange) {
+  onStatusChange(status: StatusChange): void {
     const bookingUpdateBody: BookingStatusUpdateRequest = {
       bookingStatus: status.status,
       comment: '',

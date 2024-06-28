@@ -46,7 +46,7 @@ export class UpcomingConsultationsComponent
     this.loadUpcomingBookings();
   }
 
-  loadUpcomingBookings() {
+  loadUpcomingBookings(): void {
     this.upcomingBookings$ = this.bookingService
       .getBookingForEntity(this.role, new Date().toISOString(), undefined)
       .pipe(
@@ -82,11 +82,11 @@ export class UpcomingConsultationsComponent
       );
   }
 
-  getSingleBooking(booking: Booking) {
+  getSingleBooking(booking: Booking): void {
     this.selectedBooking = booking;
   }
 
-  onStatusChange(status: StatusChange) {
+  onStatusChange(status: StatusChange): void {
     const bookingUpdateBody: BookingStatusUpdateRequest = {
       bookingStatus: status.status,
       comment: '',

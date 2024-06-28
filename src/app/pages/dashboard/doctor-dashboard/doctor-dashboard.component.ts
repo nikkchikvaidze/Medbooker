@@ -28,7 +28,7 @@ export class DoctorDashboardComponent extends Unsubscribe implements OnInit {
     this.loadingBookings();
   }
 
-  loadingBookings() {
+  loadingBookings(): void {
     this.bookings$ = this.authService.getUser().pipe(
       takeUntil(this.unsubscribe$),
       switchMap((user) => {
@@ -49,7 +49,7 @@ export class DoctorDashboardComponent extends Unsubscribe implements OnInit {
     );
   }
 
-  onStatusChange(status: StatusChange) {
+  onStatusChange(status: StatusChange): void {
     const bookingUpdateBody: BookingStatusUpdateRequest = {
       bookingStatus: status.status,
       comment: '',

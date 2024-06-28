@@ -32,7 +32,7 @@ export class HealthRecordsComponent extends Unsubscribe implements OnInit {
     this.loadPassedBookings();
   }
 
-  loadPassedBookings() {
+  loadPassedBookings(): void {
     if (!this.role) return;
     this.passedBookings$ = this.bookingService
       .getBookingForEntity(this.role, undefined, new Date().toISOString())
@@ -68,7 +68,7 @@ export class HealthRecordsComponent extends Unsubscribe implements OnInit {
         })
       );
   }
-  getSingleBooking(booking: Booking) {
+  getSingleBooking(booking: Booking): void {
     this.selectedBooking = booking;
   }
 }

@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
     this.registerInitForm();
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.isSubmitted = true;
     if (!this.registerForm?.valid) return;
     const userData: User = {
@@ -54,7 +54,7 @@ export class RegisterComponent implements OnInit {
       });
   }
 
-  registerInitForm() {
+  registerInitForm(): void {
     this.registerForm = this.fb.group({
       Firstname: ['', Validators.required],
       Lastname: ['', Validators.required],
@@ -70,17 +70,17 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  isValid(controlName: string) {
+  isValid(controlName: string): boolean | undefined {
     return this.registerForm?.controls[controlName]?.valid && this.isSubmitted;
   }
 
-  isInvalid(controlName: string) {
+  isInvalid(controlName: string): boolean | undefined {
     return (
       this.registerForm?.controls[controlName]?.invalid && this.isSubmitted
     );
   }
 
-  isValidEmail(controlName: string) {
+  isValidEmail(controlName: string): boolean | undefined {
     return (
       this.registerForm?.controls[controlName]?.valid &&
       this.isSubmitted &&
@@ -88,29 +88,29 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  isInvalidEmail(controlName: string) {
+  isInvalidEmail(controlName: string): boolean {
     return (
       (this.registerForm?.controls[controlName]?.invalid && this.isSubmitted) ||
       this.isError
     );
   }
 
-  isInvalidPassword(controlName: string) {
+  isInvalidPassword(controlName: string): boolean | undefined {
     return this.registerForm?.get(`passwords`)?.invalid && this.isSubmitted;
   }
 
-  isValidPassword(controlName: string) {
+  isValidPassword(controlName: string): boolean | undefined {
     return this.registerForm?.get(`passwords`)?.valid && this.isSubmitted;
   }
 
-  getErrorMessage(controlName: string) {
+  getErrorMessage(controlName: string): string {
     const control = this.registerForm?.controls[controlName];
     if (control?.errors?.['required']) return `${controlName} is required`;
     if (control?.errors?.['email']) return 'Please enter the valid Email';
     return '';
   }
 
-  getErrorMessageForPasswords(controlName: string) {
+  getErrorMessageForPasswords(controlName: string): string {
     const matchControl = this.registerForm?.controls['passwords'];
     const control = matchControl?.get(controlName);
     if (matchControl?.errors?.['match'] && controlName === 'Confirmpassword') {

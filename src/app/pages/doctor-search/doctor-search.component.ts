@@ -52,14 +52,14 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
     );
   }
 
-  createSearchForm() {
+  createSearchForm(): void {
     this.searchForm = new FormGroup({
       firstName: new FormControl(''),
       lastName: new FormControl(''),
     });
   }
 
-  getSearchFormValues() {
+  getSearchFormValues(): void {
     this.searchForm?.valueChanges
       .pipe(debounceTime(1500), takeUntil(this.unsubscribe$))
       .subscribe(({ firstName, lastName }) => {
@@ -89,7 +89,7 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
       });
   }
 
-  doctorBook(doctor: Doctor) {
+  doctorBook(doctor: Doctor): void {
     this.route.navigate([`shell/booking/`, doctor.entityNo]);
   }
 }

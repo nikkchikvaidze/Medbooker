@@ -50,18 +50,18 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
       .subscribe((user) => (this.currentUser = user));
   }
 
-  loadAllPatients() {
+  loadAllPatients(): void {
     this.patients$ = this.patientService.getAllPatients();
   }
 
-  createSearchForm() {
+  createSearchForm(): void {
     this.searchForm = new FormGroup({
       firstName: new FormControl(''),
       lastName: new FormControl(''),
     });
   }
 
-  getSearchFormValues() {
+  getSearchFormValues(): void {
     this.searchForm?.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(1000))
       .subscribe((value) => {
@@ -76,12 +76,12 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
       });
   }
 
-  showInformation(patient: Patient) {
+  showInformation(patient: Patient): void {
     this.selectedPatient = patient;
     this.showAdditionalInformation = true;
   }
 
-  createAppointment(selectedPatient: Patient) {
+  createAppointment(selectedPatient: Patient): void {
     if (!this.pickedTime) return;
     let startDate = new Date(this.pickedTime);
     let endDate = new Date(startDate.getTime() + 30 * 60000);
