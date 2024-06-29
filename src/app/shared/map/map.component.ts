@@ -54,8 +54,8 @@ export class MapComponent implements AfterViewInit {
     } as any).addTo(this.map);
   }
 
-  setViewCenter(lat: number, lng: number): void {
-    this.map.flyTo([lat, lng], this.initialState.zoom, {
+  setViewCenter(lat: number, lng: number, zoom: number): void {
+    this.map.flyTo([lat, lng], zoom, {
       animate: true,
       easeLinearity: 1,
     });

@@ -26,7 +26,7 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
   searchForm: FormGroup | undefined;
   doctors$: Observable<Doctor[]> | undefined;
   @ViewChild(MapComponent) map: MapComponent | undefined;
-  public initialState: MapCoords = { lng: 50, lat: 49, zoom: 4 };
+  public initialState: MapCoords = { lng: 50, lat: 49, zoom: 2 };
 
   ngOnInit(): void {
     this.loadAllDoctors();
@@ -39,15 +39,18 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
       tap((doctors) => {
         this.map?.clearMarkers();
         doctors.forEach((doctor) => {
-          let { lat, lng, firstName, lastName } = {
-            firstName: doctor.firstName,
-            lastName: doctor.lastName,
-            lat: Math.random() * (41.916667 - 41.316667) + 41.316667,
-            lng: Math.random() * (44.983333 - 44.383333) + 44.383333,
-          };
+          let {
+            coords: { lat, lng },
+            firstName,
+            lastName,
+          } = doctor;
           this.map?.setMarker(lat, lng, firstName, lastName);
         });
-        this.map?.setViewCenter(this.initialState.lat, this.initialState.lng);
+        this.map?.setViewCenter(
+          this.initialState.lat,
+          this.initialState.lng,
+          this.initialState.zoom
+        );
       })
     );
   }
@@ -74,13 +77,12 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
               tap((doctors) => {
                 this.map?.clearMarkers();
                 doctors.forEach((doctor) => {
-                  let { lat, lng, firstName, lastName } = {
-                    firstName: doctor.firstName,
-                    lastName: doctor.lastName,
-                    lat: Math.random() * (41.916667 - 41.316667) + 41.316667,
-                    lng: Math.random() * (44.983333 - 44.383333) + 44.383333,
-                  };
-                  this.map?.setViewCenter(lat, lng);
+                  let {
+                    coords: { lat, lng },
+                    firstName,
+                    lastName,
+                  } = doctor;
+                  this.map?.setViewCenter(lat, lng, 4);
                   this.map?.setMarker(lat, lng, firstName, lastName);
                 });
               })
