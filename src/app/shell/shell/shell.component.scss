@@ -43,6 +43,7 @@ nb-sidebar {
 nb-layout-column {
   opacity: 0;
   animation: animate 1s linear 1.3s forwards;
+  padding-top: 1rem !important;
 }
 
 @keyframes animate {

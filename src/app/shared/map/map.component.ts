@@ -35,8 +35,8 @@ export class MapComponent implements AfterViewInit {
   private mapContainer!: ElementRef<HTMLElement>;
   @Input() initialState!: MapCoords;
   private isRetina = Browser.retina;
-  private baseUrl = `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${environment.MAP_API_KEY}`;
-  private retinaUrl = `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}@2x.png?apiKey=${environment.MAP_API_KEY}`;
+  private baseUrl = `https://maps.geoapify.com/v1/tile/osm-carto/{z}/{x}/{y}.png?apiKey=${environment.MAP_API_KEY}`;
+  private retinaUrl = `https://maps.geoapify.com/v1/tile/osm-carto/{z}/{x}/{y}@2x.png?apiKey=${environment.MAP_API_KEY}`;
   private markers: Marker[] = [];
 
   constructor() {}
@@ -50,7 +50,7 @@ export class MapComponent implements AfterViewInit {
     tileLayer(this.isRetina ? this.retinaUrl : this.baseUrl, {
       apiKey: environment.MAP_API_KEY,
       maxZoom: 20,
-      id: 'osm-bright',
+      id: 'osm-carto',
     } as any).addTo(this.map);
   }
 
