@@ -7,8 +7,8 @@ import {
   BookingResponse,
   BookingStatusUpdateRequest,
 } from '../models';
-import { Observable } from 'rxjs';
-import { httpOptions } from '../shared/utils/httpoptions';
+import { Observable, from, map } from 'rxjs';
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,15 +16,23 @@ import { httpOptions } from '../shared/utils/httpoptions';
 export class BookingService {
   constructor(
     private http: HttpClient,
-    @Inject(BASE_URL) private base_url: string
+    private supabaseService: SupabaseService
   ) {}
-
-  full_Url = `${this.base_url}/bookings`;
 
   //This methods need to be updated, once bookings will be added in db
 
-  createBooking(body: BookingRequest): Observable<Booking> {
-    return this.http.post<Booking>(this.full_Url, body);
+  createBooking(booking: BookingRequest): Observable<Booking> {
+    // return this.http.post<Booking>(body);
+    const promise = this.supabaseService.supabase
+      .from('bookings')
+      .insert([booking])
+      .select()
+      .single();
+    return from(promise).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
   }
 
   getBookingForEntity(
@@ -35,19 +43,15 @@ export class BookingService {
     let params = new HttpParams();
     if (fromDate) params = params.set('fromDate', `eq.${fromDate}`);
     if (toDate) params = params.set('toDate', `eq.${toDate}`);
-    return this.http.get<BookingResponse>(
-      `${this.full_Url}/attendee/${entityNo}`,
-      {
-        headers: httpOptions.headers,
-        params,
-      }
-    );
+    return this.http.get<BookingResponse>(`/attendee/${entityNo}`, {
+      params,
+    });
   }
 
   updateBooking(
     bookingId: number,
     body: BookingStatusUpdateRequest
   ): Observable<Booking> {
-    return this.http.put<Booking>(`${this.full_Url}/${bookingId}/status`, body);
+    return this.http.put<Booking>(`${bookingId}/status`, body);
   }
 }

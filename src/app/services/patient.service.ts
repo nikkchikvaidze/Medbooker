@@ -1,9 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BASE_URL } from '../shared';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, from, map } from 'rxjs';
 import { Patient } from '../models';
-import { httpOptions } from '../shared/utils/httpoptions';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({
@@ -12,11 +10,8 @@ import { SupabaseService } from './supabase.service';
 export class PatientService {
   constructor(
     private http: HttpClient,
-    @Inject(BASE_URL) private base_url: string,
     private supabaseService: SupabaseService
   ) {}
-
-  full_Url = `${this.base_url}patients/`;
 
   getAllPatients(): Observable<Patient[]> {
     const promise = this.supabaseService.supabase.from('patients').select('*');
