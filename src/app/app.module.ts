@@ -30,6 +30,7 @@ import {
   NbTimepickerModule,
   NbUserModule,
 } from '@nebular/theme';
+import { StoreStateModule } from './store/store.module';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {
     NbTimepickerModule.forRoot(),
     NbInputModule,
     NbUserModule,
+    StoreStateModule,
   ],
   providers: [{ provide: BASE_URL, useValue: environment.SUPABASE_BASE_URL }],
   bootstrap: [AppComponent],
