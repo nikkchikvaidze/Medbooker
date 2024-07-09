@@ -82,14 +82,7 @@
                 />
               </div>
             </div>
-            <div class="roles form-control">
-              <input
-                type="radio"
-                id="doctor"
-                [value]="role.Doctor"
-                formControlName="role"
-              />
-              <label for="doctor">Doctor</label>
+            <div class="form-field form-control">
               <input
                 type="radio"
                 id="patient"
@@ -97,6 +90,33 @@
                 formControlName="role"
               />
               <label for="patient">Patient</label>
+              <input
+                type="radio"
+                id="doctor"
+                [value]="role.Doctor"
+                formControlName="role"
+              />
+              <label for="doctor">Doctor</label>
+            </div>
+            <div
+              class="form-field"
+              [ngClass]="isDoctorSelected ? 'show' : 'hide'"
+              [attr.data-error-message]="getErrorMessage('specialty')"
+              [class.error-message]="isInvalid('specialty')"
+            >
+              <ng-container *ngIf="specialties$ | async as specialties">
+                <nb-select
+                  [fullWidth]="false"
+                  formControlName="specialty"
+                  placeholder="Select Specialty"
+                >
+                  <nb-option
+                    *ngFor="let specialty of specialties"
+                    [value]="specialty.type"
+                    >{{ specialty.type }}</nb-option
+                  >
+                </nb-select>
+              </ng-container>
             </div>
             <button nbButton outline status="basic" type="submit">
               Register

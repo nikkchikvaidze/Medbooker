@@ -2,6 +2,7 @@ export interface User {
   firstName: string;
   lastName: string;
   entityNo: number;
+  specialty?: string;
 }
 export interface SupabaseUser {
   uid: string;

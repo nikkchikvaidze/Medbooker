@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map, Observable, takeUntil } from 'rxjs';
+import { Specialty } from 'src/app/models/specialty.model';
 import { Roles, User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services';
+import { SpecialtiesService } from 'src/app/services/specialties.service';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import {
   passwordMatcher,
   signUpErrorMessage,
@@ -13,21 +17,35 @@ import {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent extends Unsubscribe implements OnInit {
   role = Roles;
   registerForm: FormGroup | undefined;
   errorMessage = '';
   isError = false;
   private isSubmitted = false;
+  isDoctorSelected: boolean = false;
+  specialties$: Observable<Specialty[]> =
+    this.specialtiesService.getSpecialties();
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private specialtiesService: SpecialtiesService,
     private router: Router
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.registerInitForm();
+    this.registerForm?.valueChanges
+      .pipe(
+        map((value) => value.role),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((role) => {
+        this.isDoctorSelected = role === this.role.Doctor;
+      });
   }
 
   onSubmit(): void {
@@ -37,6 +55,7 @@ export class RegisterComponent implements OnInit {
       firstName: this.registerForm?.get('Firstname')?.value,
       lastName: this.registerForm?.get('Lastname')?.value,
       entityNo: this.registerForm?.get('role')?.value,
+      specialty: this.registerForm?.get('specialty')?.value,
     };
     this.authService
       .signUp(
@@ -66,7 +85,8 @@ export class RegisterComponent implements OnInit {
         },
         { validators: passwordMatcher }
       ),
-      role: ['', Validators.required],
+      role: [this.role.Patient, Validators.required],
+      specialty: ['', Validators.required],
     });
   }
 

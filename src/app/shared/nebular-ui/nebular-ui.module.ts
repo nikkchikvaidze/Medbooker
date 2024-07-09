@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   NbButtonModule,
   NbLayoutModule,
+  NbSelectModule,
   NbSidebarModule,
   NbThemeModule,
 } from '@nebular/theme';
@@ -15,7 +16,8 @@ import {
     NbButtonModule,
     NbSidebarModule,
     NbSidebarModule.forRoot(),
+    NbSelectModule,
   ],
-  exports: [NbLayoutModule, NbButtonModule, NbSidebarModule],
+  exports: [NbLayoutModule, NbButtonModule, NbSidebarModule, NbSelectModule],
 })
 export class NebularUiModule {}
