@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, map } from 'rxjs';
-import { Doctor } from '../models';
+import { Doctor, CreateDoctorRequest } from '../models';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({
@@ -40,6 +40,15 @@ export class DoctorService {
 
     if (firstName) promise = promise.like('firstName', `%${firstName}%`);
     if (lastName) promise = promise.like('lastName', `%${lastName}%`);
+
+    return from(promise).pipe(map((response) => response.data ?? []));
+  }
+
+  addDoctor(doctor: CreateDoctorRequest): Observable<Doctor[]> {
+    const promise = this.supabaseService.supabase
+      .from('doctors')
+      .insert([doctor])
+      .select();
 
     return from(promise).pipe(map((response) => response.data ?? []));
   }

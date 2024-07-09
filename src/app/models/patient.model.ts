@@ -1,5 +1,5 @@
 export interface Patient {
-  entityNo: number;
+  entityNo?: number;
   firstName: string;
   lastName: string;
 }

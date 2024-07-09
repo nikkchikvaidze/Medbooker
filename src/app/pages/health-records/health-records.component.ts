@@ -60,7 +60,7 @@ export class HealthRecordsComponent extends Unsubscribe implements OnInit {
                   ...booking,
                   practiceName: doctors.find(
                     (doctor) => doctor.entityNo == doctorsEntity
-                  )?.practiceName,
+                  )?.specialty,
                 };
               });
             })

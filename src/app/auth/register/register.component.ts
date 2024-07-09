@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { map, Observable, takeUntil } from 'rxjs';
 import { Specialty } from 'src/app/models/specialty.model';
 import { Roles, User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services';
+import { AuthService, DoctorService } from 'src/app/services';
 import { SpecialtiesService } from 'src/app/services/specialties.service';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import {
@@ -31,6 +31,7 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private specialtiesService: SpecialtiesService,
+    private doctorService: DoctorService,
     private router: Router
   ) {
     super();
@@ -69,6 +70,18 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
           this.isError = true;
         } else {
           this.router.navigate(['shell/dashboard']);
+          const payloadData = {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            specialty: userData.specialty,
+            coords: {
+              lat: 40,
+              lng: 40,
+            },
+          };
+          this.doctorService
+            .addDoctor(payloadData)
+            .subscribe((x) => console.log(x, 'დამატებიდან'));
         }
       });
   }

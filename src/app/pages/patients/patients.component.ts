@@ -113,21 +113,22 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
       id: 0,
       organiser: Roles.Doctor,
     };
-    this.bookingService
-      .createBooking(appointment)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((x) => {
-        const bookingUpdateBody: BookingStatusUpdateRequest = {
-          bookingStatus: Status.CONFIRMED,
-          comment: '',
-          includeDependent: true,
-        };
-        this.bookingService
-          .updateBooking(x.id, bookingUpdateBody)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(() => {
-            this.showAdditionalInformation = false;
-          });
-      });
+    //TODO:
+    // this.bookingService
+    //   .createBooking(appointment)
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((x) => {
+    //     const bookingUpdateBody: BookingStatusUpdateRequest = {
+    //       bookingStatus: Status.CONFIRMED,
+    //       comment: '',
+    //       includeDependent: true,
+    //     };
+    //     this.bookingService
+    //       .updateBooking(x.id, bookingUpdateBody)
+    //       .pipe(takeUntil(this.unsubscribe$))
+    //       .subscribe(() => {
+    //         this.showAdditionalInformation = false;
+    //       });
+    //   });
   }
 }

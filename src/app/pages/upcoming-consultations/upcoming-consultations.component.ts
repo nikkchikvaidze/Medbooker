@@ -71,9 +71,9 @@ export class UpcomingConsultationsComponent
                 )?.entityNo;
                 return {
                   ...booking,
-                  practiceName: doctors.find(
+                  specialty: doctors.find(
                     (doctor) => doctor.entityNo == doctorsEntity
-                  )?.practiceName,
+                  )?.specialty,
                 };
               });
             })

@@ -87,8 +87,9 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
       id: 0,
       organiser: Roles.Patient,
     };
-    this.bookingService
-      .createBooking(booking)
-      .subscribe(() => this.route.navigate(['shell/upcoming-consultations']));
+    //TODO:
+    // this.bookingService
+    //   .createBooking(booking)
+    //   .subscribe(() => this.route.navigate(['shell/upcoming-consultations']));
   }
 }
