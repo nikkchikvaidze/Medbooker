@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './reducers/total-reducers';
+import { DoctorsEffects } from './effects/doctor-search.effect';
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forRoot(reducers),
-    //effects will be added here
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([DoctorsEffects]),
   ],
   declarations: [],
 })
