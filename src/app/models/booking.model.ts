@@ -43,7 +43,7 @@ export interface StatusChange {
 export interface Attendee {
   attendeeType: AttendeeType;
   entity: Patient;
-  entityNo: number;
+  entityNo: number | undefined;
 }
 
 export enum AttendeeType {
