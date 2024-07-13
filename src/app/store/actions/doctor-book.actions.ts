@@ -8,7 +8,7 @@ export const loadSingleDoctorBook = createAction(
 
 export const loadSingleDoctorSuccess = createAction(
   '[Doctor-Book Page] Load single doctor success',
-  props<{ doctor: Doctor | undefined }>()
+  props<{ doctor: Doctor }>()
 );
 
 export const loadSingleDoctorFailure = createAction(

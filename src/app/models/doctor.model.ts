@@ -14,7 +14,7 @@ export interface CreateDoctorRequest {
   lastName: string;
   specialty?: string | undefined;
   practiceNo?: string;
-  coords: {
+  coords?: {
     lat: number;
     lng: number;
   };
