@@ -6,11 +6,17 @@ import { reducers } from './reducers/total-reducers';
 import { DoctorsEffects } from './effects/doctor-search.effect';
 import { DoctorBookEffects } from './effects/doctor-book.effect';
 import { PatientsEffects } from './effects/patients.effect';
+import { HealthPageEffects } from './effects/health.effect';
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([DoctorsEffects, PatientsEffects, DoctorBookEffects]),
+    EffectsModule.forRoot([
+      DoctorsEffects,
+      PatientsEffects,
+      DoctorBookEffects,
+      HealthPageEffects,
+    ]),
   ],
   declarations: [],
 })
