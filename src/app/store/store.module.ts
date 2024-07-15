@@ -7,6 +7,7 @@ import { DoctorsEffects } from './effects/doctor-search.effect';
 import { DoctorBookEffects } from './effects/doctor-book.effect';
 import { PatientsEffects } from './effects/patients.effect';
 import { HealthPageEffects } from './effects/health.effect';
+import { UpcomingConsultationsEffects } from './effects/upcoming-consultations.effect';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +17,7 @@ import { HealthPageEffects } from './effects/health.effect';
       PatientsEffects,
       DoctorBookEffects,
       HealthPageEffects,
+      UpcomingConsultationsEffects,
     ]),
   ],
   declarations: [],
