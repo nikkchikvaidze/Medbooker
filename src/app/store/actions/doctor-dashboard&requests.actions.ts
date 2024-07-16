@@ -3,7 +3,7 @@ import { Booking, Status } from 'src/app/models';
 
 export const loadDashboardAndRequestsBookings = createAction(
   '[DocDashboard&Requests] Get bookings',
-  props<{ entityNo: number | undefined }>()
+  props<{ entityNo: number }>()
 );
 
 export const loadPassedBookingsSuccess = createAction(
@@ -17,5 +17,5 @@ export const loadPassedBookingsFailure = createAction(
 
 export const changeStatusForSelectedBooking = createAction(
   '[DocDashboard&Requests] Change status of selected booking',
-  props<{ id: number; entityNo: number | undefined; status: Status }>()
+  props<{ id: number; entityNo: number; status: Status }>()
 );
