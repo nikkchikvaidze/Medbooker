@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, from, map } from 'rxjs';
-import { Patient } from '../models';
+import { CreatePatientRequest, Patient } from '../models';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({
@@ -44,6 +44,15 @@ export class PatientService {
 
     if (firstName) promise = promise.like('firstName', `%${firstName}%`);
     if (lastName) promise = promise.like('lastName', `%${lastName}%`);
+
+    return from(promise).pipe(map((response) => response.data ?? []));
+  }
+
+  addPatient(patient: CreatePatientRequest): Observable<Patient[]> {
+    const promise = this.supabaseService.supabase
+      .from('patients')
+      .insert([patient])
+      .select();
 
     return from(promise).pipe(map((response) => response.data ?? []));
   }
