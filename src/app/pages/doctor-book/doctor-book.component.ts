@@ -51,7 +51,7 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
     );
     this.doctor$ = this.doctorService
       .getSingleDoctor(currentEntityNo)
-      .pipe(map((value) => value[0]));
+      .pipe(map((value) => value));
   }
 
   // TODO: This needs some adjustments

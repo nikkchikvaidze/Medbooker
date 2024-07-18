@@ -84,6 +84,18 @@
             font-weight: bold;
           }
         }
+
+        .password-container {
+          position: relative;
+
+          .visibility-icon {
+            position: absolute;
+            top: 15px;
+            right: 75px;
+            cursor: pointer;
+            color: white;
+          }
+        }
       }
     }
     .bg-bubbles {

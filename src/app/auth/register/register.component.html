@@ -56,14 +56,28 @@
                 "
                 [class.error-message]="isInvalidPassword('Password')"
               >
-                <input
-                  nbInput
-                  type="password"
-                  placeholder="Password *"
-                  formControlName="Password"
-                  [class.valid]="isValidPassword('Password')"
-                  [class.invalid]="isInvalidPassword('Password')"
-                />
+                <div class="password-container">
+                  <input
+                    nbInput
+                    [type]="showPassword ? 'text' : 'password'"
+                    placeholder="Password *"
+                    formControlName="Password"
+                    [class.valid]="isValidPassword('Password')"
+                    [class.invalid]="isInvalidPassword('Password')"
+                  />
+                  <nb-icon
+                    *ngIf="showPassword"
+                    icon="eye-off-outline"
+                    class="visibility-icon"
+                    (click)="toggleShowPassword()"
+                  ></nb-icon>
+                  <nb-icon
+                    *ngIf="!showPassword"
+                    icon="eye-outline"
+                    class="visibility-icon"
+                    (click)="toggleShowPassword()"
+                  ></nb-icon>
+                </div>
               </div>
               <div
                 class="form-control"
@@ -72,14 +86,28 @@
                 "
                 [class.error-message]="isInvalidPassword('Confirmpassword')"
               >
-                <input
-                  nbInput
-                  type="password"
-                  placeholder="Confirm Password *"
-                  formControlName="Confirmpassword"
-                  [class.valid]="isValidPassword('Confirmpassword')"
-                  [class.invalid]="isInvalidPassword('Confirmpassword')"
-                />
+                <div class="password-container">
+                  <input
+                    nbInput
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    placeholder="Confirm Password *"
+                    formControlName="Confirmpassword"
+                    [class.valid]="isValidPassword('Confirmpassword')"
+                    [class.invalid]="isInvalidPassword('Confirmpassword')"
+                  />
+                  <nb-icon
+                    *ngIf="showConfirmPassword"
+                    icon="eye-off-outline"
+                    class="visibility-icon"
+                    (click)="toggleShowConfirmPassword()"
+                  ></nb-icon>
+                  <nb-icon
+                    *ngIf="!showConfirmPassword"
+                    icon="eye-outline"
+                    class="visibility-icon"
+                    (click)="toggleShowConfirmPassword()"
+                  ></nb-icon>
+                </div>
               </div>
             </div>
             <div class="form-field form-control">

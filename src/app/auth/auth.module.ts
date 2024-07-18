@@ -4,11 +4,17 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { NebularUiModule } from '../shared';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NbInputModule } from '@nebular/theme';
+import { NbIconModule, NbInputModule } from '@nebular/theme';
 import { ErrorMessageDirective } from '../directives/error-message.directive';
 
 @NgModule({
-  imports: [CommonModule, NebularUiModule, ReactiveFormsModule, NbInputModule],
+  imports: [
+    CommonModule,
+    NebularUiModule,
+    ReactiveFormsModule,
+    NbInputModule,
+    NbIconModule,
+  ],
   declarations: [LoginComponent, RegisterComponent, ErrorMessageDirective],
   exports: [LoginComponent, RegisterComponent, ErrorMessageDirective],
 })

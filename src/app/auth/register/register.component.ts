@@ -26,6 +26,8 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
   isDoctorSelected: boolean = false;
   specialties$: Observable<Specialty[]> =
     this.specialtiesService.getSpecialties();
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -153,5 +155,13 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
     if (control?.errors?.['minlength'])
       return `Please enter minimum ${control?.errors?.['minlength'].requiredLength} characters`;
     return '';
+  }
+
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleShowConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

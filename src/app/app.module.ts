@@ -31,6 +31,7 @@ import {
   NbUserModule,
 } from '@nebular/theme';
 import { StoreStateModule } from './store/store.module';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { StoreStateModule } from './store/store.module';
     NbTimepickerModule.forRoot(),
     NbInputModule,
     NbUserModule,
+    NbEvaIconsModule,
     StoreStateModule,
   ],
   providers: [{ provide: BASE_URL, useValue: environment.SUPABASE_BASE_URL }],
