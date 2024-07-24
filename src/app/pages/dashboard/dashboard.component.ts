@@ -23,7 +23,7 @@ export class DashboardComponent extends Unsubscribe implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((session) => {
         if (session?.user) {
-          this.roleFromEntity = session.user.user_metadata['entityNo'];
+          this.roleFromEntity = session.user.user_metadata['role'];
         }
       });
   }

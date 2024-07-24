@@ -42,13 +42,14 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
             entityNo: user['entityNo'],
             firstName: user['firstName'],
             lastName: user['lastName'],
+            role: user['role'],
           };
           this.currentUser = userInfo;
         }
       });
-    let currentEntityNo = Number(
-      this.activatedRoute.snapshot.paramMap.get('id')
-    );
+    let currentEntityNo = this.activatedRoute.snapshot.paramMap.get(
+      'id'
+    ) as string;
     this.doctor$ = this.doctorService
       .getSingleDoctor(currentEntityNo)
       .pipe(map((value) => value));

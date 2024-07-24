@@ -18,7 +18,7 @@ export class DoctorService {
     );
   }
 
-  getSingleDoctor(entityNo: number): Observable<Doctor> {
+  getSingleDoctor(entityNo: string): Observable<Doctor> {
     const promise = this.supabaseService.supabase
       .from('doctors')
       .select()

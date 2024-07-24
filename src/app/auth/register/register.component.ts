@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, Observable, takeUntil } from 'rxjs';
+import { AuthError } from '@supabase/supabase-js';
+import { map, Observable, of, switchMap, takeUntil } from 'rxjs';
 import { Specialty } from 'src/app/models/specialty.model';
 import { Roles, User } from 'src/app/models/user.model';
 import { AuthService, DoctorService } from 'src/app/services';
+import { PatientService } from 'src/app/services/patient.service';
 import { SpecialtiesService } from 'src/app/services/specialties.service';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import {
@@ -34,6 +36,7 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
     private authService: AuthService,
     private specialtiesService: SpecialtiesService,
     private doctorService: DoctorService,
+    private patientService: PatientService,
     private router: Router
   ) {
     super();
@@ -57,33 +60,46 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
     const userData: User = {
       firstName: this.registerForm?.get('Firstname')?.value,
       lastName: this.registerForm?.get('Lastname')?.value,
-      entityNo: this.registerForm?.get('role')?.value,
+      role: this.registerForm?.get('role')?.value,
       specialty: this.registerForm?.get('specialty')?.value,
     };
+
     this.authService
       .signUp(
         this.registerForm?.get('Email')?.value,
         this.registerForm?.get('passwords.Password')?.value,
         userData
       )
-      .subscribe((user) => {
-        if (user?.error) {
-          this.errorMessage = signUpErrorMessage(user.error.message);
-          this.isError = true;
-        } else {
-          this.router.navigate(['shell/dashboard']);
-          const payloadData = {
+      .pipe(
+        switchMap((user) => {
+          if (user?.error) {
+            this.errorMessage = signUpErrorMessage(user.error.message);
+            this.isError = true;
+            return of(user.error);
+          }
+          const patientData = {
             firstName: userData.firstName,
             lastName: userData.lastName,
+            role: userData.role,
+          };
+          const doctorData = {
+            ...patientData,
             specialty: userData.specialty,
             coords: {
               lat: 40,
               lng: 40,
             },
           };
-          this.doctorService
-            .addDoctor(payloadData)
-            .subscribe((x) => console.log(x, 'დამატებიდან'));
+          if (userData.role === this.role.Doctor) {
+            return this.doctorService.addDoctor(doctorData);
+          } else {
+            return this.patientService.addPatient(patientData);
+          }
+        })
+      )
+      .subscribe((response) => {
+        if (!(response instanceof AuthError)) {
+          this.router.navigate(['shell/dashboard']);
         }
       });
   }
@@ -101,7 +117,7 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
         { validators: passwordMatcher }
       ),
       role: [this.role.Patient, Validators.required],
-      specialty: ['', Validators.required],
+      specialty: [''],
     });
   }
 

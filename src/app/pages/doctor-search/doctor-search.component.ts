@@ -39,12 +39,14 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
       tap((doctors) => {
         this.map?.clearMarkers();
         doctors.forEach((doctor) => {
-          let {
-            coords: { lat, lng },
-            firstName,
-            lastName,
-          } = doctor;
-          this.map?.setMarker(lat, lng, firstName, lastName);
+          if (doctor.coords) {
+            let {
+              coords: { lat, lng },
+              firstName,
+              lastName,
+            } = doctor;
+            this.map?.setMarker(lat, lng, firstName, lastName);
+          }
         });
         this.map?.setViewCenter(
           this.initialState.lat,
@@ -77,13 +79,15 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
               tap((doctors) => {
                 this.map?.clearMarkers();
                 doctors.forEach((doctor) => {
-                  let {
-                    coords: { lat, lng },
-                    firstName,
-                    lastName,
-                  } = doctor;
-                  this.map?.setViewCenter(lat, lng, 4);
-                  this.map?.setMarker(lat, lng, firstName, lastName);
+                  if (doctor.coords) {
+                    let {
+                      coords: { lat, lng },
+                      firstName,
+                      lastName,
+                    } = doctor;
+                    this.map?.setViewCenter(lat, lng, 4);
+                    this.map?.setMarker(lat, lng, firstName, lastName);
+                  }
                 });
               })
             );

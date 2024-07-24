@@ -1,7 +1,7 @@
 export interface User {
   firstName: string;
   lastName: string;
-  entityNo: number;
+  role: Roles;
   specialty?: string;
 }
 export interface SupabaseUser {
@@ -13,5 +13,5 @@ export interface SupabaseUser {
 }
 export enum Roles {
   Patient = 1000000001,
-  Doctor = 1100000222,
+  Doctor = 1000000002,
 }

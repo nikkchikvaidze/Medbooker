@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getAuthState().subscribe((session) => {
       if (session?.user) {
-        this.roleFromEntity = session.user.user_metadata['entityNo'];
+        this.roleFromEntity = session.user.user_metadata['role'];
       }
     });
   }

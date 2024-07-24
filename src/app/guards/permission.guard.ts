@@ -20,7 +20,7 @@ export class PermissionGuard implements CanActivate {
   ): Observable<boolean> {
     return this.authService.getUser().pipe(
       map((user) => {
-        if (user?.['entityNo'] === route.data['role']) {
+        if (user?.['role'] === route.data['role']) {
           return true;
         }
         this.router.navigate(['shell/dashboard']);
