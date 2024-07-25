@@ -12,7 +12,8 @@ export class SpecialtiesService {
   getSpecialties(): Observable<Specialty[]> {
     const promise = this.supabaseService.supabase
       .from('specialties')
-      .select('*');
+      .select('*')
+      .order('type', { ascending: true });
     return from(promise).pipe(
       map((response) => {
         return response.data ?? [];
