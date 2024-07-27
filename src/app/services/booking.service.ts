@@ -54,4 +54,17 @@ export class BookingService {
   ): Observable<Booking> {
     return this.http.put<Booking>(`${bookingId}/status`, body);
   }
+
+  getAllBooking(): Observable<Booking[]> {
+    const promise = this.supabaseService.supabase
+      .from('bookings')
+      .select(
+        '*, doctor:doctor_entity_number (*), patient:patient_entity_number (*)'
+      );
+    return from(promise).pipe(
+      map((response) => {
+        return response.data ?? [];
+      })
+    );
+  }
 }

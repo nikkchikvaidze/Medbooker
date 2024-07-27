@@ -1,3 +1,4 @@
+import { Doctor } from './doctor.model';
 import { Patient } from './patient.model';
 
 export interface Booking {
@@ -9,6 +10,10 @@ export interface Booking {
   status: Status;
   statusComment?: string;
   title?: string;
+  doctorEntityNum: number;
+  patientEntityNum: number;
+  doctor: Doctor;
+  patient: Patient;
 }
 
 export interface BookingRequest {
