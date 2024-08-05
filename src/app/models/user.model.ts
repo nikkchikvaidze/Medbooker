@@ -1,8 +1,10 @@
+import { Specialty } from './specialty.model';
+
 export interface User {
   firstName: string;
   lastName: string;
   role: Roles;
-  specialty?: string;
+  specialty?: Specialty;
 }
 export interface SupabaseUser {
   uid: string;

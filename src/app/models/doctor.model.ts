@@ -1,8 +1,9 @@
 import { Member } from './member.model';
+import { Specialty } from './specialty.model';
 import { Roles } from './user.model';
 
 export interface Doctor extends Member {
-  specialty: string;
+  specialty: Specialty;
   practiceNo?: string;
   coords?: {
     lat: number;
@@ -13,7 +14,7 @@ export interface Doctor extends Member {
 export interface CreateDoctorRequest {
   firstName: string;
   lastName: string;
-  specialty?: string;
+  specialty?: Specialty;
   practiceNo?: string;
   role: Roles;
   coords?: {

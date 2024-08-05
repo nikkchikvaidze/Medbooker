@@ -29,7 +29,7 @@
         <nb-card accent="success" *ngFor="let doctor of doctors">
           <nb-card-header>
             {{ doctor.firstName }} {{ doctor.lastName }}
-            <p>{{ doctor.specialty }}</p>
+            <p>{{ doctor.specialty.type }}</p>
           </nb-card-header>
           <nb-card-body>
             <button

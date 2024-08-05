@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthError } from '@supabase/supabase-js';
 import { map, Observable, of, switchMap, takeUntil } from 'rxjs';
+import { CreateDoctorRequest, CreatePatientRequest } from 'src/app/models';
 import { Specialty } from 'src/app/models/specialty.model';
 import { Roles, User } from 'src/app/models/user.model';
 import { AuthService, DoctorService } from 'src/app/services';
@@ -77,12 +78,12 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
             this.isError = true;
             return of(user.error);
           }
-          const patientData = {
+          const patientData: CreatePatientRequest = {
             firstName: userData.firstName,
             lastName: userData.lastName,
             role: userData.role,
           };
-          const doctorData = {
+          const doctorData: CreateDoctorRequest = {
             ...patientData,
             specialty: userData.specialty,
             coords: {
@@ -117,7 +118,7 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
         { validators: passwordMatcher }
       ),
       role: [this.role.Patient, Validators.required],
-      specialty: [''],
+      specialty: [null],
     });
   }
 
