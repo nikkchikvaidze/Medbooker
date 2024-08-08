@@ -14,6 +14,7 @@ export interface Doctor extends Member {
 export interface CreateDoctorRequest {
   firstName: string;
   lastName: string;
+  entityNo: string;
   specialty?: Specialty;
   practiceNo?: string;
   role: Roles;

@@ -10,18 +10,16 @@ import { AuthService } from 'src/app/services';
 })
 export class ConsultationCardComponent implements OnInit {
   @Input() booking: Booking | undefined;
-  @Input() fullname: string | undefined;
-  @Input() practiceName: string | undefined;
   @Output() chosenBooking = new EventEmitter();
   attendee = AttendeeType;
   role = Roles;
-  entity: number | undefined;
+  loggedInUserRole: Roles | undefined;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.getUser().subscribe((user) => {
-      this.entity = user?.['entityNo'];
+      this.loggedInUserRole = user?.['role'];
     });
   }
   getBooking(booking: Booking) {

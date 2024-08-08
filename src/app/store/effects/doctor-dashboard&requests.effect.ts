@@ -12,57 +12,57 @@ export class DocDashboardAndRequestsEffects {
     private bookingService: BookingService
   ) {}
 
-  loadDocDashboardAndRequestsBookings$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(
-        DoctorDashboardAndRequestsActions.loadDashboardAndRequestsBookings
-      ),
-      mergeMap((action) => {
-        return this.bookingService
-          .getBookingForEntity(action.entityNo, new Date().toISOString())
-          .pipe(
-            map((x) =>
-              Object.keys(x.bookingMap)
-                .map((key) => x.bookingMap[key])
-                .flat()
-                .sort(
-                  (a, b) =>
-                    Number(new Date(a.startTime)) -
-                    Number(new Date(b.startTime))
-                )
-                .filter((x) => x.status === Status.TENTATIVE)
-            )
-          );
-      }),
-      map((bookings) =>
-        DoctorDashboardAndRequestsActions.loadPassedBookingsSuccess({
-          bookings,
-        })
-      ),
-      catchError(() =>
-        of(DoctorDashboardAndRequestsActions.loadPassedBookingsFailure)
-      )
-    );
-  });
+  // loadDocDashboardAndRequestsBookings$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(
+  //       DoctorDashboardAndRequestsActions.loadDashboardAndRequestsBookings
+  //     ),
+  //     mergeMap((action) => {
+  //       return this.bookingService
+  //         .getBookingsForEntity(action.entityNo, new Date().toISOString())
+  //         .pipe(
+  //           map((x) =>
+  //             Object.keys(x.bookingMap)
+  //               .map((key) => x.bookingMap[key])
+  //               .flat()
+  //               .sort(
+  //                 (a, b) =>
+  //                   Number(new Date(a.startTime)) -
+  //                   Number(new Date(b.startTime))
+  //               )
+  //               .filter((x) => x.status === Status.TENTATIVE)
+  //           )
+  //         );
+  //     }),
+  //     map((bookings) =>
+  //       DoctorDashboardAndRequestsActions.loadPassedBookingsSuccess({
+  //         bookings,
+  //       })
+  //     ),
+  //     catchError(() =>
+  //       of(DoctorDashboardAndRequestsActions.loadPassedBookingsFailure)
+  //     )
+  //   );
+  // });
 
-  changeStatusForSelectedBooking$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(DoctorDashboardAndRequestsActions.changeStatusForSelectedBooking),
-      mergeMap((action) => {
-        return this.bookingService
-          .updateBooking(action.id, {
-            bookingStatus: action.status,
-            comment: '',
-            includeDependent: true,
-          })
-          .pipe(
-            map(() => {
-              return DoctorDashboardAndRequestsActions.loadDashboardAndRequestsBookings(
-                { entityNo: action.entityNo }
-              );
-            })
-          );
-      })
-    );
-  });
+  // changeStatusForSelectedBooking$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(DoctorDashboardAndRequestsActions.changeStatusForSelectedBooking),
+  //     mergeMap((action) => {
+  //       return this.bookingService
+  //         .updateBooking(action.id, {
+  //           bookingStatus: action.status,
+  //           comment: '',
+  //           includeDependent: true,
+  //         })
+  //         .pipe(
+  //           map(() => {
+  //             return DoctorDashboardAndRequestsActions.loadDashboardAndRequestsBookings(
+  //               { entityNo: action.entityNo }
+  //             );
+  //           })
+  //         );
+  //     })
+  //   );
+  // });
 }

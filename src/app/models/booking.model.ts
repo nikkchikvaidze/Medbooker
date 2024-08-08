@@ -1,12 +1,13 @@
 import { Doctor } from './doctor.model';
 import { Patient } from './patient.model';
+import { Roles } from './user.model';
 
 export interface Booking {
   startTime: string;
   endTime: string;
   id: number;
   description?: string;
-  attendees: Attendee[];
+  organiser: Roles;
   status: Status;
   statusComment?: string;
   title?: string;
@@ -16,14 +17,25 @@ export interface Booking {
   patient: Patient;
 }
 
+// export interface BookingRequest {
+//   attendees: Attendee[];
+//   description?: string;
+//   endDate: string;
+//   id: number;
+//   organiser: number;
+//   startDate: string;
+//   title?: string;
+// }
+
 export interface BookingRequest {
-  attendees: Attendee[];
   description?: string;
-  endDate: string;
-  id: number;
   organiser: number;
-  startDate: string;
   title?: string;
+  startTime: string;
+  endTime: string;
+  doctorEntityNo: string;
+  patientEntityNo: string;
+  status: Status;
 }
 
 export interface BookingResponse {
@@ -57,8 +69,7 @@ export enum AttendeeType {
 }
 
 export enum Status {
+  PENDING = 'PENDING',
   CONFIRMED = 'CONFIRMED',
-  TENTATIVE = 'TENTATIVE',
   DECLINED = 'DECLINED',
-  CANCELLED = 'CANCELLED',
 }

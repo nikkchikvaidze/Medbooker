@@ -7,9 +7,9 @@ import {
   DocDashboardAndRequestsEffects,
   // DoctorBookEffects,
   DoctorsEffects,
-  HealthPageEffects,
+  // HealthPageEffects,
   // PatientsEffects,
-  UpcomingConsultationsEffects,
+  // UpcomingConsultationsEffects,
 } from './effects';
 
 @NgModule({
@@ -20,8 +20,8 @@ import {
       DoctorsEffects,
       // PatientsEffects,
       // DoctorBookEffects,
-      HealthPageEffects,
-      UpcomingConsultationsEffects,
+      // HealthPageEffects,
+      // UpcomingConsultationsEffects,
       DocDashboardAndRequestsEffects,
     ]),
   ],

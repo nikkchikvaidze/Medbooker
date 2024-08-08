@@ -82,6 +82,7 @@ export class RegisterComponent extends Unsubscribe implements OnInit {
             firstName: userData.firstName,
             lastName: userData.lastName,
             role: userData.role,
+            entityNo: user?.data.user?.user_metadata['sub'],
           };
           const doctorData: CreateDoctorRequest = {
             ...patientData,

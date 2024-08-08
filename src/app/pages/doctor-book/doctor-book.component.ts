@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, takeUntil } from 'rxjs';
-import { AttendeeType, Doctor, Patient } from 'src/app/models';
+import { BookingRequest, Doctor, Patient, Status } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { AuthService, BookingService, DoctorService } from 'src/app/services';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
@@ -39,7 +39,7 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
       .subscribe((user) => {
         if (user) {
           const userInfo = {
-            entityNo: user['entityNo'],
+            entityNo: user['sub'],
             firstName: user['firstName'],
             lastName: user['lastName'],
             role: user['role'],
@@ -60,37 +60,18 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
     if (!this.pickedTime) return;
     let startDate = new Date(this.pickedTime);
     let endDate = new Date(startDate.getTime() + 30 * 60000);
-    const booking = {
-      attendees: [
-        {
-          attendeeType: AttendeeType.PATIENT,
-          entity: {
-            entityNo: this.currentUser.entityNo,
-            firstName: this.currentUser.firstName,
-            lastName: this.currentUser.lastName,
-          },
-          entityNo: Roles.Patient,
-        },
-        {
-          attendeeType: AttendeeType.PROVIDER,
-          entity: {
-            entityNo: doctor.entityNo,
-            firstName: doctor.firstName,
-            lastName: doctor.lastName,
-          },
-          entityNo: doctor.entityNo,
-        },
-      ],
-      startDate: startDate.toISOString(),
+    const booking: BookingRequest = {
+      startTime: startDate.toString(),
       description: 'book for doctor',
       title: 'book',
-      endDate: endDate.toISOString(),
-      id: 0,
+      endTime: endDate.toString(),
       organiser: Roles.Patient,
+      doctorEntityNo: doctor.entityNo,
+      patientEntityNo: this.currentUser.entityNo,
+      status: Status.PENDING,
     };
-    //TODO:
-    // this.bookingService
-    //   .createBooking(booking)
-    //   .subscribe(() => this.route.navigate(['shell/upcoming-consultations']));
+    this.bookingService
+      .createBooking(booking)
+      .subscribe((x) => this.route.navigate(['shell/upcoming-consultations']));
   }
 }

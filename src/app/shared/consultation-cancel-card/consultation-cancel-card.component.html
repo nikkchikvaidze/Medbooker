@@ -4,24 +4,23 @@
   <nb-card status="success" *ngIf="selectedBooking">
     <ng-container>
       <nb-card-header>
-        <ng-container *ngIf="entity == role.Patient">
-          {{ selectedBooking.attendees | name : attendee.PROVIDER }} |
-          {{ practiceName }}
+        <ng-container *ngIf="loggedInUserRole == role.Patient">
+          {{ selectedBooking.doctor.firstName }}
         </ng-container>
-        <ng-container *ngIf="entity == role.Doctor">
-          {{ selectedBooking.attendees | name : attendee.PATIENT }}
+        <ng-container *ngIf="loggedInUserRole == role.Doctor">
+          {{ selectedBooking.patient.firstName }}
         </ng-container>
       </nb-card-header>
       <nb-card-body>
         {{ selectedBooking.startTime | date : "medium" }}
-        <button
+        <!-- <button
           *ngIf="cancelButton"
           nbButton
           status="danger"
-          (click)="changeStatus(status.CANCELLED, selectedBooking.id)"
+          (click)="changeStatus(status., selectedBooking.id)"
         >
           Cancel booking
-        </button>
+        </button> -->
       </nb-card-body>
     </ng-container>
   </nb-card>

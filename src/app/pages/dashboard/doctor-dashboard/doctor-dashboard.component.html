@@ -2,12 +2,13 @@
   <nb-layout-column class="colored-column-warning left-column">
     <nb-card class="first-card" accent="success">
       <nb-card-header>Consultation requests</nb-card-header>
-      <nb-card-body *ngIf="bookings$ | async as bookings">
+      <nb-card-body *ngIf="bookings && bookings.length > 0">
         <ng-container *ngFor="let booking of bookings">
-          <app-request-card
+          <!-- <app-request-card
             [booking]="booking"
             (statusChange)="onStatusChange($event)"
-          ></app-request-card>
+          ></app-request-card> -->
+          <app-request-card [booking]="booking"></app-request-card>
         </ng-container>
       </nb-card-body>
     </nb-card>

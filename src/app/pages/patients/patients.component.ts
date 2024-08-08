@@ -4,7 +4,9 @@ import { User, UserMetadata } from '@supabase/supabase-js';
 import { Observable, debounceTime, takeUntil } from 'rxjs';
 import {
   AttendeeType,
+  BookingRequest,
   BookingStatusUpdateRequest,
+  Doctor,
   Patient,
   Status,
 } from 'src/app/models';
@@ -23,7 +25,7 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
   searchForm: FormGroup | undefined;
   selectedPatient: Patient | undefined;
   showAdditionalInformation = false;
-  currentUser: UserMetadata | undefined;
+  currentUser!: Doctor;
   pickedTime = '';
   get today() {
     const date = new Date();
@@ -47,7 +49,25 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
     this.authService
       .getUser()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((user) => (this.currentUser = user));
+      .subscribe((user) => {
+        if (user) {
+          const userInfo = {
+            entityNo: user['sub'],
+            firstName: user['firstName'],
+            lastName: user['lastName'],
+            role: user['role'],
+            specialty: user['specialty'],
+          };
+          this.currentUser = userInfo;
+        }
+        this.bookingService
+          .getBookingsForEntity(this.currentUser?.entityNo, Roles.Doctor)
+          .subscribe((x) => console.log(x, 'ბუქინგები'));
+      });
+
+    this.bookingService
+      .getAllBooking()
+      .subscribe((x) => console.log(x, 'ყველა'));
   }
 
   loadAllPatients(): void {
@@ -85,34 +105,20 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
     if (!this.pickedTime) return;
     let startDate = new Date(this.pickedTime);
     let endDate = new Date(startDate.getTime() + 30 * 60000);
-    const appointment = {
-      attendees: [
-        {
-          attendeeType: AttendeeType.PROVIDER,
-          entity: {
-            entityNo: this.currentUser?.['entityNo'],
-            firstName: this.currentUser?.['firstName'],
-            lastName: this.currentUser?.['lastName'],
-          },
-          entityNo: Roles.Doctor,
-        },
-        {
-          attendeeType: AttendeeType.PATIENT,
-          entity: {
-            entityNo: selectedPatient.entityNo,
-            firstName: selectedPatient.firstName,
-            lastName: selectedPatient.lastName,
-          },
-          entityNo: selectedPatient.entityNo,
-        },
-      ],
-      startDate: startDate.toISOString(),
+    const appointment: BookingRequest = {
+      doctorEntityNo: this.currentUser?.entityNo,
+      patientEntityNo: selectedPatient.entityNo,
+      startTime: startDate.toString(),
       description: 'appointment for patient',
       title: 'appointment',
-      endDate: endDate.toISOString(),
-      id: 0,
+      endTime: endDate.toString(),
       organiser: Roles.Doctor,
+      status: Status.PENDING,
     };
+    console.log(appointment.startTime);
+    this.bookingService
+      .createBooking(appointment)
+      .subscribe(() => (this.showAdditionalInformation = false));
     //TODO:
     // this.bookingService
     //   .createBooking(appointment)

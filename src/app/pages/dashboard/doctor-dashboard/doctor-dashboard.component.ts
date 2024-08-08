@@ -3,6 +3,7 @@ import { Observable, map, switchMap, takeUntil } from 'rxjs';
 import {
   Booking,
   BookingStatusUpdateRequest,
+  Roles,
   Status,
   StatusChange,
 } from 'src/app/models';
@@ -22,41 +23,35 @@ export class DoctorDashboardComponent extends Unsubscribe implements OnInit {
     super();
   }
 
-  bookings$: Observable<Booking[]> | undefined;
+  bookings: Booking[] | undefined;
 
   ngOnInit(): void {
     this.loadingBookings();
   }
 
   loadingBookings(): void {
-    this.bookings$ = this.authService.getUser().pipe(
-      takeUntil(this.unsubscribe$),
-      switchMap((user) => {
-        return this.bookingService
-          .getBookingForEntity(user?.['entityNo'], new Date().toISOString())
-          .pipe(
-            map((x) => x.bookingMap),
-            map((x) =>
-              Object.keys(x)
-                .map((key) => x[key])
-                .flat()
-            ),
-            map((x) =>
-              x.filter((x) => x.status === Status.TENTATIVE).splice(0, 5)
-            )
+    this.authService
+      .getUser()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap((user) => {
+          return this.bookingService.getBookingsForEntity(
+            user?.['sub'],
+            Roles.Doctor
           );
-      })
-    );
+        })
+      )
+      .subscribe((bookings) => (this.bookings = bookings));
   }
 
-  onStatusChange(status: StatusChange): void {
-    const bookingUpdateBody: BookingStatusUpdateRequest = {
-      bookingStatus: status.status,
-      comment: '',
-      includeDependent: true,
-    };
-    this.bookingService
-      .updateBooking(status.id, bookingUpdateBody)
-      .subscribe(() => this.loadingBookings());
-  }
+  // onStatusChange(status: StatusChange): void {
+  //   const bookingUpdateBody: BookingStatusUpdateRequest = {
+  //     bookingStatus: status.status,
+  //     comment: '',
+  //     includeDependent: true,
+  //   };
+  //   this.bookingService
+  //     .updateBooking(status.id, bookingUpdateBody)
+  //     .subscribe(() => this.loadingBookings());
+  // }
 }

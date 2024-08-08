@@ -1,7 +1,7 @@
 <nb-layout>
   <nb-layout-column class="colored-column-warning left-column">
     <nb-card class="first-card" accent="success">
-      <nb-card-body *ngIf="bookings$ | async as bookings">
+      <nb-card-body *ngIf="bookings && bookings.length > 0">
         <ng-container *ngFor="let booking of bookings">
           <app-request-card
             [booking]="booking"

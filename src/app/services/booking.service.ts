@@ -1,12 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BASE_URL } from '../shared';
-import {
-  Booking,
-  BookingRequest,
-  BookingResponse,
-  BookingStatusUpdateRequest,
-} from '../models';
+import { Injectable } from '@angular/core';
+import { Booking, BookingRequest, Roles, Status } from '../models';
 import { Observable, from, map } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 
@@ -14,15 +7,9 @@ import { SupabaseService } from './supabase.service';
   providedIn: 'root',
 })
 export class BookingService {
-  constructor(
-    private http: HttpClient,
-    private supabaseService: SupabaseService
-  ) {}
-
-  //This methods need to be updated, once bookings will be added in db
+  constructor(private supabaseService: SupabaseService) {}
 
   createBooking(booking: BookingRequest): Observable<Booking> {
-    // return this.http.post<Booking>(body);
     const promise = this.supabaseService.supabase
       .from('bookings')
       .insert([booking])
@@ -35,32 +22,38 @@ export class BookingService {
     );
   }
 
-  getBookingForEntity(
-    entityNo: number,
-    fromDate?: string,
-    toDate?: string
-  ): Observable<BookingResponse> {
-    let params = new HttpParams();
-    if (fromDate) params = params.set('fromDate', `eq.${fromDate}`);
-    if (toDate) params = params.set('toDate', `eq.${toDate}`);
-    return this.http.get<BookingResponse>(`/attendee/${entityNo}`, {
-      params,
-    });
+  getBookingsForEntity(
+    entityNo: string,
+    role: number
+  ): Observable<Booking[] | undefined> {
+    const promise = this.supabaseService.supabase
+      .from('bookings')
+      .select('*, doctor:doctorEntityNo (*), patient:patientEntityNo (*)')
+      .eq(
+        role === Roles.Doctor ? 'doctorEntityNo' : 'patientEntityNo',
+        entityNo
+      );
+
+    return from(promise).pipe(
+      map((response) => {
+        return response.data || [];
+      })
+    );
   }
 
-  updateBooking(
-    bookingId: number,
-    body: BookingStatusUpdateRequest
-  ): Observable<Booking> {
-    return this.http.put<Booking>(`${bookingId}/status`, body);
+  updateBooking(bookingId: number, status: Status): Observable<any> {
+    const promise = this.supabaseService.supabase
+      .from('bookings')
+      .update({ status })
+      .eq('id', bookingId)
+      .select();
+    return from(promise);
   }
 
   getAllBooking(): Observable<Booking[]> {
     const promise = this.supabaseService.supabase
       .from('bookings')
-      .select(
-        '*, doctor:doctor_entity_number (*), patient:patient_entity_number (*)'
-      );
+      .select('*, doctor:doctorEntityNo (*), patient:patientEntityNo (*)');
     return from(promise).pipe(
       map((response) => {
         return response.data ?? [];

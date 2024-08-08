@@ -6,6 +6,7 @@ export interface Patient extends Member {}
 export interface CreatePatientRequest {
   firstName: string;
   lastName: string;
+  entityNo: string;
   role: Roles;
   coords?: {
     lat: number;

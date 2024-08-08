@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, takeUntil } from 'rxjs';
+import { Observable, map, switchMap, takeUntil, tap } from 'rxjs';
 import {
   Booking,
   BookingStatusUpdateRequest,
+  Roles,
   Status,
   StatusChange,
 } from 'src/app/models';
@@ -18,8 +19,8 @@ export class ConsultationRequestsComponent
   extends Unsubscribe
   implements OnInit
 {
-  bookings$: Observable<Booking[]> | undefined;
-  entityNo: number | undefined;
+  bookings: Booking[] | undefined;
+  entityNo: string | undefined;
 
   constructor(
     private bookingService: BookingService,
@@ -35,37 +36,31 @@ export class ConsultationRequestsComponent
   loadingBookings(): void {
     this.authService
       .getUser()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((user) => {
-        this.entityNo = user?.['entityNo'];
-      });
-    if (this.entityNo) {
-      this.bookings$ = this.bookingService
-        .getBookingForEntity(this.entityNo, new Date().toISOString())
-        .pipe(
-          map((x) => x.bookingMap),
-          map((x) =>
-            Object.keys(x)
-              .map((key) => x[key])
-              .flat()
-              .sort(
-                (a, b) =>
-                  Number(new Date(a.startTime)) - Number(new Date(b.startTime))
-              )
-          ),
-          map((x) => x.filter((x) => x.status === Status.TENTATIVE))
-        );
-    }
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap((user) => {
+          return this.bookingService.getBookingsForEntity(
+            user?.['sub'],
+            Roles.Doctor
+          );
+        })
+      )
+      .pipe(
+        map((bookings) =>
+          bookings?.filter((booking) => booking.status === Status.PENDING)
+        )
+      )
+      .subscribe((bookings) => (this.bookings = bookings));
   }
 
-  onStatusChange(status: StatusChange): void {
-    const bookingUpdateBody: BookingStatusUpdateRequest = {
-      bookingStatus: status.status,
-      comment: '',
-      includeDependent: true,
-    };
+  onStatusChange({ status, id }: StatusChange): void {
+    // const bookingUpdateBody: BookingStatusUpdateRequest = {
+    //   bookingStatus: status,
+    //   comment: '',
+    //   includeDependent: true,
+    // };
     this.bookingService
-      .updateBooking(status.id, bookingUpdateBody)
-      .subscribe(() => this.loadingBookings());
+      .updateBooking(id, status)
+      .subscribe((_) => this.loadingBookings());
   }
 }

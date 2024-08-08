@@ -1,11 +1,11 @@
 <nb-card accent="success" *ngIf="booking" (click)="getBooking(booking)">
   <nb-card-header>
-    <ng-container *ngIf="entity == role.Patient">
-      {{ booking.attendees | name : attendee.PROVIDER }} |
-      {{ practiceName }}
+    <ng-container *ngIf="loggedInUserRole == role.Patient">
+      {{ booking.doctor.firstName }} |
+      {{ booking.doctor.specialty.type }}
     </ng-container>
-    <ng-container *ngIf="entity == role.Doctor">
-      {{ booking.attendees | name : attendee.PATIENT }}
+    <ng-container *ngIf="loggedInUserRole == role.Doctor">
+      {{ booking.patient.firstName }}
     </ng-container>
   </nb-card-header>
   <nb-card-body>
