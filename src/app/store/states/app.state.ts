@@ -1,3 +1,4 @@
+import { AuthState, initialAuthState } from './auth.state';
 import {
   initialSelectedDoctorState,
   SelectedDoctorState,
@@ -15,6 +16,7 @@ import {
 } from './upcoming-consultations.state';
 
 export interface AppState {
+  auth: AuthState;
   healthPage: HealthState;
   upcomingConsultationsPage: UpcomingState;
   doctorDashboardAndRequestsPage: DoctorDashboardAndRequests;
@@ -24,6 +26,7 @@ export interface AppState {
 }
 
 export const initialAppState: AppState = {
+  auth: initialAuthState,
   healthPage: initialHealthState,
   upcomingConsultationsPage: initialUpcomingState,
   doctorDashboardAndRequestsPage: initialDoctorDashboardAndRequestsState,
