@@ -12,3 +12,8 @@ export const getSingleDoctor = createSelector(
   selectDoctorsPageState,
   (state) => state.singleDoctor
 );
+
+export const getDoctorSearchState = createSelector(
+  selectDoctorsPageState,
+  (state) => state.callState
+);

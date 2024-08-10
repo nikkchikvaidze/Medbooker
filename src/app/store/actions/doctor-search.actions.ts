@@ -14,9 +14,13 @@ export const loadAllDoctorsFailure = createAction(
   '[Doctor-search Page] Load all doctors failure'
 );
 
+export const loadAllDoctorsNoData = createAction(
+  '[Doctor-search Page] Load all doctors no data'
+);
+
 export const loadSingleDoctor = createAction(
   '[Doctor-search Page] Load single doctor',
-  props<{ firstName: string; lastName: string }>()
+  props<{ firstName: string | undefined; lastName: string | undefined }>()
 );
 
 export const loadSingleDoctorSuccess = createAction(
@@ -26,4 +30,12 @@ export const loadSingleDoctorSuccess = createAction(
 
 export const loadSingleDoctorFailure = createAction(
   '[Doctor-search Page] Load single doctor failure'
+);
+
+export const loadSingleDoctorNoData = createAction(
+  '[Doctor-search Page] Load single doctor no data'
+);
+
+export const clearSingleDoctor = createAction(
+  '[Doctor-search Page] Clear single doctor'
 );

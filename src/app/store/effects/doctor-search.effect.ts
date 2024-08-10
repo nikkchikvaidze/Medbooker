@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { DoctorService } from 'src/app/services';
 import * as DoctorsActions from '../actions/doctor-search.actions';
+import { Doctor } from 'src/app/models';
 
 @Injectable({ providedIn: 'root' })
 export class DoctorsEffects {
@@ -17,7 +18,12 @@ export class DoctorsEffects {
       mergeMap(() => {
         return this.doctorService.getAllDoctors();
       }),
-      map((doctors) => DoctorsActions.loadAllDoctorsSuccess({ doctors })),
+      map((doctors: Doctor[]) => {
+        if (doctors.length < 1) {
+          return DoctorsActions.loadAllDoctorsNoData;
+        }
+        return DoctorsActions.loadAllDoctorsSuccess({ doctors });
+      }),
       catchError(() => of(DoctorsActions.loadAllDoctorsFailure))
     );
   });
@@ -31,7 +37,12 @@ export class DoctorsEffects {
           action.lastName
         );
       }),
-      map((doctor) => DoctorsActions.loadSingleDoctorSuccess({ doctor })),
+      map((doctor: Doctor[]) => {
+        if (doctor.length < 1) {
+          return DoctorsActions.loadSingleDoctorNoData;
+        }
+        return DoctorsActions.loadSingleDoctorSuccess({ doctor });
+      }),
       catchError(() => of(DoctorsActions.loadSingleDoctorFailure))
     );
   });
