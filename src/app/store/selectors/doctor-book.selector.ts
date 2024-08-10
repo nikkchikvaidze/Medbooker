@@ -7,3 +7,8 @@ export const getSelectedDoctor = createSelector(
   selectDoctorBookPage,
   (state) => state.selectedDoctor
 );
+
+export const getSelectedDoctorState = createSelector(
+  selectDoctorBookPage,
+  (state) => state.callState
+);

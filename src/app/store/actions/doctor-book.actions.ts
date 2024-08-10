@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { Doctor, User } from 'src/app/models';
+import { Booking, BookingRequest, Doctor, User } from 'src/app/models';
 
 export const loadSingleDoctorBook = createAction(
   '[Doctor-Book Page] Load single doctor',
-  props<{ entityNo: number }>()
+  props<{ entityNo: string }>()
 );
 
 export const loadSingleDoctorSuccess = createAction(
@@ -17,11 +17,12 @@ export const loadSingleDoctorFailure = createAction(
 
 export const createBookingForDoctor = createAction(
   '[Doctor-Book Page] Create booking for doctor',
-  props<{ selectedDoctor: Doctor; currentUser: User; pickedTime: Date }>()
+  props<{ booking: BookingRequest }>()
 );
 
 export const createBookingForDoctorSuccess = createAction(
-  '[Doctor-Book Page] Create booking for doctor success'
+  '[Doctor-Book Page] Create booking for doctor success',
+  props<{ booking: Booking }>()
 );
 
 export const createBookingForDoctorFailure = createAction(

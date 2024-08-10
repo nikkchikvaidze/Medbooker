@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, takeUntil } from 'rxjs';
 import { BookingRequest, Doctor, Patient, Status } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
-import { AuthService, BookingService, DoctorService } from 'src/app/services';
+import { AuthService } from 'src/app/services';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
+import { AppState } from 'src/app/store/states/app.state';
+import * as DoctorBookActions from '../../store/actions/doctor-book.actions';
+import * as DoctorBookSelectors from '../../store/selectors/doctor-book.selector';
 
 @Component({
   selector: 'app-doctor-book',
@@ -15,14 +19,15 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
   constructor(
     private route: Router,
     private activatedRoute: ActivatedRoute,
-    private doctorService: DoctorService,
     private authService: AuthService,
-    private bookingService: BookingService
+    private store: Store<AppState>
   ) {
     super();
   }
 
-  doctor$: Observable<Doctor> | undefined;
+  doctor$: Observable<Doctor | undefined> = this.store.select(
+    DoctorBookSelectors.getSelectedDoctor
+  );
   // TODO: This needs some adjustments
   currentUser!: Patient;
   pickedTime = '';
@@ -50,12 +55,13 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
     let currentEntityNo = this.activatedRoute.snapshot.paramMap.get(
       'id'
     ) as string;
-    this.doctor$ = this.doctorService
-      .getSingleDoctor(currentEntityNo)
-      .pipe(map((value) => value));
+    this.getSingleDoctor(currentEntityNo);
   }
 
-  // TODO: This needs some adjustments
+  getSingleDoctor(entityNo: string): void {
+    this.store.dispatch(DoctorBookActions.loadSingleDoctorBook({ entityNo }));
+  }
+
   bookDoctor(doctor: Doctor): void {
     if (!this.pickedTime) return;
     let startDate = new Date(this.pickedTime);
@@ -70,8 +76,7 @@ export class DoctorBookComponent extends Unsubscribe implements OnInit {
       patientEntityNo: this.currentUser.entityNo,
       status: Status.PENDING,
     };
-    this.bookingService
-      .createBooking(booking)
-      .subscribe((x) => this.route.navigate(['shell/upcoming-consultations']));
+    this.store.dispatch(DoctorBookActions.createBookingForDoctor({ booking }));
+    this.route.navigate(['shell/upcoming-consultations']);
   }
 }

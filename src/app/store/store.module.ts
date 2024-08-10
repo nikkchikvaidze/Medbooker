@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './reducers/total-reducers';
 import {
   DocDashboardAndRequestsEffects,
-  // DoctorBookEffects,
+  DoctorBookEffects,
   DoctorsEffects,
   // HealthPageEffects,
   // PatientsEffects,
@@ -19,7 +19,7 @@ import {
     EffectsModule.forRoot([
       DoctorsEffects,
       // PatientsEffects,
-      // DoctorBookEffects,
+      DoctorBookEffects,
       // HealthPageEffects,
       // UpcomingConsultationsEffects,
       DocDashboardAndRequestsEffects,
