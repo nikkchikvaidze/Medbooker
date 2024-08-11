@@ -10,7 +10,7 @@ import {
   UserMetadata,
 } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
-import { User } from '../models/user.model';
+import { UserRequest } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -39,7 +39,7 @@ export class AuthService {
   public signUp(
     email: string,
     password: string,
-    data: User
+    data: UserRequest
   ): Observable<AuthResponse | null> {
     return from(
       this.supabase.auth.signUp({ email, password, options: { data } })

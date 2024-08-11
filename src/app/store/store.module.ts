@@ -11,12 +11,14 @@ import {
   // PatientsEffects,
   // UpcomingConsultationsEffects,
 } from './effects';
+import { AuthEffects } from './effects/auth.effect';
 
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
+      AuthEffects,
       DoctorsEffects,
       // PatientsEffects,
       DoctorBookEffects,

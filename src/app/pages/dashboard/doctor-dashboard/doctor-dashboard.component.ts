@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, switchMap, takeUntil } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs';
 import {
   Booking,
   BookingStatusUpdateRequest,

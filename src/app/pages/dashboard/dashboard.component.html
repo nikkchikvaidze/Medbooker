@@ -1,6 +1,8 @@
-<app-patient-dashboard
-  *ngIf="roleFromEntity === role.Patient"
-></app-patient-dashboard>
-<app-doctor-dashboard
-  *ngIf="roleFromEntity === role.Doctor"
-></app-doctor-dashboard>
+<ng-container *ngIf="loggedInUserRole$ | async as loggedInUserRole">
+  <app-patient-dashboard
+    *ngIf="loggedInUserRole === role.Patient"
+  ></app-patient-dashboard>
+  <app-doctor-dashboard
+    *ngIf="loggedInUserRole === role.Doctor"
+  ></app-doctor-dashboard>
+</ng-container>
