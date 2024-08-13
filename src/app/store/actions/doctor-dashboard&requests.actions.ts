@@ -1,9 +1,22 @@
 import { createAction, props } from '@ngrx/store';
-import { Booking, Status } from 'src/app/models';
+import { Booking, Roles, Status } from 'src/app/models';
 
 export const loadDashboardAndRequestsBookings = createAction(
-  '[DocDashboard&Requests] Get bookings',
-  props<{ entityNo: number }>()
+  '[DocDashboard&Requests] Get Bookings',
+  props<{ entityNo: string; role: Roles }>()
+);
+
+export const loadDashboardAndRequestsBookingsSuccess = createAction(
+  '[DocDashboard&Requests] Get Bookings Success',
+  props<{ booking: Booking[] }>()
+);
+
+export const loadDashboardAndRequestsBookingsNoData = createAction(
+  '[DocDashboard&Requests] Get Bookings No Data'
+);
+
+export const loadDashboardAndRequestsBookingsFailure = createAction(
+  '[DocDashboard&Requests] Get Bookings Failure'
 );
 
 export const loadPassedBookingsSuccess = createAction(

@@ -22,10 +22,7 @@ export class BookingService {
     );
   }
 
-  getBookingsForEntity(
-    entityNo: string,
-    role: number
-  ): Observable<Booking[] | undefined> {
+  getBookingsForEntity(entityNo: string, role: number): Observable<Booking[]> {
     const promise = this.supabaseService.supabase
       .from('bookings')
       .select('*, doctor:doctorEntityNo (*), patient:patientEntityNo (*)')

@@ -8,3 +8,8 @@ export const getDocDashboardAndRequestsBookings = createSelector(
   selectDocDashboardAndRequestsPage,
   (state) => state.bookings
 );
+
+export const getDocDashboardAndRequestsCallState = createSelector(
+  selectDocDashboardAndRequestsPage,
+  (state) => state.callState
+);

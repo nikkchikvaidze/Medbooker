@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { switchMap, takeUntil } from 'rxjs';
-import {
-  Booking,
-  BookingStatusUpdateRequest,
-  Roles,
-  Status,
-  StatusChange,
-} from 'src/app/models';
-import { AuthService, BookingService } from 'src/app/services';
+import { Store } from '@ngrx/store';
+import { Observable, takeUntil } from 'rxjs';
+import { Booking, Roles } from 'src/app/models';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
+import { AppState } from 'src/app/store/states/app.state';
+import * as AuthSelectors from '../../../store/selectors/auth.selector';
+import * as DocDashboardActions from '../../../store/actions/doctor-dashboard&requests.actions';
+import * as DocDashboardSelectors from '../../../store/selectors/doctor-dashboard&requests.selector';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -16,32 +14,40 @@ import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
   styleUrls: ['./doctor-dashboard.component.scss'],
 })
 export class DoctorDashboardComponent extends Unsubscribe implements OnInit {
-  constructor(
-    private bookingService: BookingService,
-    private authService: AuthService
-  ) {
+  constructor(private store: Store<AppState>) {
     super();
   }
 
-  bookings: Booking[] | undefined;
+  bookings$: Observable<Booking[]> = this.store.select(
+    DocDashboardSelectors.getDocDashboardAndRequestsBookings
+  );
+  loggedInUserEntityNo: string = '';
 
   ngOnInit(): void {
+    this.getLoggedInUserEntityNo();
     this.loadingBookings();
   }
 
   loadingBookings(): void {
-    this.authService
-      .getUser()
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        switchMap((user) => {
-          return this.bookingService.getBookingsForEntity(
-            user?.['sub'],
-            Roles.Doctor
-          );
+    if (this.loggedInUserEntityNo) {
+      this.store.dispatch(
+        DocDashboardActions.loadDashboardAndRequestsBookings({
+          entityNo: this.loggedInUserEntityNo,
+          role: Roles.Doctor,
         })
-      )
-      .subscribe((bookings) => (this.bookings = bookings));
+      );
+    }
+  }
+
+  getLoggedInUserEntityNo(): void {
+    this.store
+      .select(AuthSelectors.getLoggedInUserEntityNo)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((entityNo) => {
+        if (entityNo) {
+          this.loggedInUserEntityNo = entityNo;
+        }
+      });
   }
 
   // onStatusChange(status: StatusChange): void {
