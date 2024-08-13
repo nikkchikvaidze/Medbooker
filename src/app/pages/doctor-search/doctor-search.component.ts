@@ -6,7 +6,6 @@ import { Observable, debounceTime, takeUntil, tap } from 'rxjs';
 import { Doctor } from 'src/app/models';
 import { MapCoords } from 'src/app/shared/map/map-coords.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
-import { capitalize } from 'src/app/shared/utils/capitalize';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import * as DoctorSelectors from '../../store/selectors/doctor-search.selector';
 import * as DoctorActions from '../../store/actions/doctor-search.actions';
@@ -57,11 +56,11 @@ export class DoctorSearchComponent extends Unsubscribe implements OnInit {
     this.searchForm?.valueChanges
       .pipe(debounceTime(1500), takeUntil(this.unsubscribe$))
       .subscribe(({ firstName, lastName }) => {
-        if (firstName === '' && lastName === '') {
+        if (!firstName && !lastName) {
           this.getAllDoctorsList();
         } else {
-          const firstname = capitalize(firstName?.toLowerCase());
-          const lastname = capitalize(lastName?.toLowerCase());
+          const firstname = firstName?.toLowerCase();
+          const lastname = lastName?.toLowerCase();
           this.store.dispatch(DoctorActions.clearSingleDoctor());
           this.store.dispatch(
             DoctorActions.loadSingleDoctor({

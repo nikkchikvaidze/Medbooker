@@ -8,7 +8,7 @@ import {
   DoctorBookEffects,
   DoctorsEffects,
   // HealthPageEffects,
-  // PatientsEffects,
+  PatientsEffects,
   // UpcomingConsultationsEffects,
 } from './effects';
 import { AuthEffects } from './effects/auth.effect';
@@ -20,7 +20,7 @@ import { AuthEffects } from './effects/auth.effect';
     EffectsModule.forRoot([
       AuthEffects,
       DoctorsEffects,
-      // PatientsEffects,
+      PatientsEffects,
       DoctorBookEffects,
       // HealthPageEffects,
       // UpcomingConsultationsEffects,

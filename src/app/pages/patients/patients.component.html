@@ -23,7 +23,7 @@
     <section *ngIf="patients$ | async as patients">
       <nb-card accent="success" *ngFor="let patient of patients">
         <nb-card-header>
-          {{ patient.firstName }} {{ patient.lastName }}
+          {{ patient.firstName | titlecase }} {{ patient.lastName | titlecase }}
         </nb-card-header>
         <nb-card-body>
           <button
@@ -42,7 +42,8 @@
     <ng-container *ngIf="selectedPatient">
       <nb-card accent="success">
         <nb-card-header>
-          {{ selectedPatient.firstName + " " + selectedPatient.lastName }}
+          {{ selectedPatient.firstName | titlecase }}
+          {{ selectedPatient.lastName | titlecase }}
         </nb-card-header>
         <nb-card-body>
           <input

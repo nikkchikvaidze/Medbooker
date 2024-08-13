@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Patient, User } from 'src/app/models';
+import { BookingRequest, Patient } from 'src/app/models';
 
 export const loadAllPatients = createAction(
   '[Patients Page] Load all patients'
@@ -14,23 +14,31 @@ export const loadAllPatientsFailure = createAction(
   '[Patients Page] Load all patients failure'
 );
 
-export const loadSinglePatient = createAction(
-  '[Patients Page] Load single patient',
-  props<{ firstName: string; lastName: string }>()
+export const loadAllPatientsNoData = createAction(
+  '[Patients Page] Load all patients no data'
 );
 
-export const loadSinglePatientSuccess = createAction(
+export const searchForPatient = createAction(
+  '[Patients Page] Load single patient',
+  props<{ firstName: string | undefined; lastName: string | undefined }>()
+);
+
+export const searchForPatientSuccess = createAction(
   '[Patients Page] Load single patient success',
   props<{ patient: Patient[] }>()
 );
 
-export const loadSinglePatientFailure = createAction(
+export const searchForPatientFailure = createAction(
   '[Patients Page] Load single patient failure'
+);
+
+export const searchForPatientNoData = createAction(
+  '[Patients Page] Load single patient no data'
 );
 
 export const createBookingForPatient = createAction(
   '[Patients Page] Create booking for patient',
-  props<{ selectedPatient: Patient; currentUser: User; pickedTime: Date }>()
+  props<{ appointment: BookingRequest }>()
 );
 
 export const createBookingForPatientSuccess = createAction(

@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { Observable, debounceTime, takeUntil } from 'rxjs';
 import { BookingRequest, Patient, Status } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
-import { BookingService } from 'src/app/services';
-import { PatientService } from 'src/app/services/patient.service';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import { AppState } from 'src/app/store/states/app.state';
 import * as AuthSelectors from '../../store/selectors/auth.selector';
+import * as PatientsActions from '../../store/actions/patients.actions';
+import * as PatientsSelectors from '../../store/selectors/patients.selector';
 
 @Component({
   selector: 'app-patients',
@@ -28,11 +28,7 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
     return date;
   }
 
-  constructor(
-    private patientService: PatientService,
-    private bookingService: BookingService,
-    private store: Store<AppState>
-  ) {
+  constructor(private store: Store<AppState>) {
     super();
   }
 
@@ -41,6 +37,7 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
     this.loadAllPatients();
     this.createSearchForm();
     this.getSearchFormValues();
+    this.getAllPatients();
   }
 
   getLoggedInUserEntityNo(): void {
@@ -55,7 +52,11 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
   }
 
   loadAllPatients(): void {
-    this.patients$ = this.patientService.getAllPatients();
+    this.store.dispatch(PatientsActions.loadAllPatients());
+  }
+
+  getAllPatients(): void {
+    this.patients$ = this.store.select(PatientsSelectors.getAllPatientsList);
   }
 
   createSearchForm(): void {
@@ -69,12 +70,16 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
     this.searchForm?.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(1000))
       .subscribe((value) => {
-        if (value.firstName === '' && value.lastName === '') {
-          this.loadAllPatients();
+        const firstName = value.firstName?.toLowerCase();
+        const lastName = value.lastName?.toLowerCase();
+        if (!firstName && !lastName) {
+          this.getAllPatients();
         } else {
-          this.patients$ = this.patientService.searchForPatient(
-            value.firstName,
-            value.lastName
+          this.store.dispatch(
+            PatientsActions.searchForPatient({ firstName, lastName })
+          );
+          this.patients$ = this.store.select(
+            PatientsSelectors.getSinglePatient
           );
         }
       });
@@ -99,25 +104,9 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
       organiser: Roles.Doctor,
       status: Status.PENDING,
     };
-    this.bookingService
-      .createBooking(appointment)
-      .subscribe(() => (this.showAdditionalInformation = false));
-    //TODO:
-    // this.bookingService
-    //   .createBooking(appointment)
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((x) => {
-    //     const bookingUpdateBody: BookingStatusUpdateRequest = {
-    //       bookingStatus: Status.CONFIRMED,
-    //       comment: '',
-    //       includeDependent: true,
-    //     };
-    //     this.bookingService
-    //       .updateBooking(x.id, bookingUpdateBody)
-    //       .pipe(takeUntil(this.unsubscribe$))
-    //       .subscribe(() => {
-    //         this.showAdditionalInformation = false;
-    //       });
-    //   });
+    this.store.dispatch(
+      PatientsActions.createBookingForPatient({ appointment })
+    );
+    this.showAdditionalInformation = false;
   }
 }
