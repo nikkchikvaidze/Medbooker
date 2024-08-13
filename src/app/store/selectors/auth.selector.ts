@@ -1,9 +1,14 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../states/app.state';
 
-const selectDoctorBookPage = (state: AppState) => state.auth;
+const selectAuth = (state: AppState) => state.auth;
 
 export const getLoggedInUser = createSelector(
-  selectDoctorBookPage,
+  selectAuth,
   (state) => state.loggedInUser
+);
+
+export const getLoggedInUserEntityNo = createSelector(
+  selectAuth,
+  (state) => state.loggedInUser?.sub
 );

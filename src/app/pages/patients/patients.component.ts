@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { User, UserMetadata } from '@supabase/supabase-js';
+import { Store } from '@ngrx/store';
 import { Observable, debounceTime, takeUntil } from 'rxjs';
-import {
-  AttendeeType,
-  BookingRequest,
-  BookingStatusUpdateRequest,
-  Doctor,
-  Patient,
-  Status,
-} from 'src/app/models';
+import { BookingRequest, Patient, Status } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
-import { AuthService, BookingService } from 'src/app/services';
+import { BookingService } from 'src/app/services';
 import { PatientService } from 'src/app/services/patient.service';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
+import { AppState } from 'src/app/store/states/app.state';
+import * as AuthSelectors from '../../store/selectors/auth.selector';
 
 @Component({
   selector: 'app-patients',
@@ -25,7 +20,7 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
   searchForm: FormGroup | undefined;
   selectedPatient: Patient | undefined;
   showAdditionalInformation = false;
-  currentUser!: Doctor;
+  loggedInUserEntityNo: string = '';
   pickedTime = '';
   get today() {
     const date = new Date();
@@ -36,38 +31,27 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
   constructor(
     private patientService: PatientService,
     private bookingService: BookingService,
-    private authService: AuthService
+    private store: Store<AppState>
   ) {
     super();
   }
 
   ngOnInit(): void {
+    this.getLoggedInUserEntityNo();
     this.loadAllPatients();
     this.createSearchForm();
     this.getSearchFormValues();
+  }
 
-    this.authService
-      .getUser()
+  getLoggedInUserEntityNo(): void {
+    this.store
+      .select(AuthSelectors.getLoggedInUserEntityNo)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((user) => {
-        if (user) {
-          const userInfo = {
-            entityNo: user['sub'],
-            firstName: user['firstName'],
-            lastName: user['lastName'],
-            role: user['role'],
-            specialty: user['specialty'],
-          };
-          this.currentUser = userInfo;
+      .subscribe((entityNo) => {
+        if (entityNo) {
+          this.loggedInUserEntityNo = entityNo;
         }
-        this.bookingService
-          .getBookingsForEntity(this.currentUser?.entityNo, Roles.Doctor)
-          .subscribe((x) => console.log(x, 'ბუქინგები'));
       });
-
-    this.bookingService
-      .getAllBooking()
-      .subscribe((x) => console.log(x, 'ყველა'));
   }
 
   loadAllPatients(): void {
@@ -102,11 +86,11 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
   }
 
   createAppointment(selectedPatient: Patient): void {
-    if (!this.pickedTime) return;
+    if (!this.pickedTime && !this.loggedInUserEntityNo) return;
     let startDate = new Date(this.pickedTime);
     let endDate = new Date(startDate.getTime() + 30 * 60000);
     const appointment: BookingRequest = {
-      doctorEntityNo: this.currentUser?.entityNo,
+      doctorEntityNo: this.loggedInUserEntityNo,
       patientEntityNo: selectedPatient.entityNo,
       startTime: startDate.toString(),
       description: 'appointment for patient',
@@ -115,7 +99,6 @@ export class PatientsComponent extends Unsubscribe implements OnInit {
       organiser: Roles.Doctor,
       status: Status.PENDING,
     };
-    console.log(appointment.startTime);
     this.bookingService
       .createBooking(appointment)
       .subscribe(() => (this.showAdditionalInformation = false));
