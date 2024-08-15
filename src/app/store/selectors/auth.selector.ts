@@ -12,3 +12,8 @@ export const getLoggedInUserEntityNo = createSelector(
   selectAuth,
   (state) => state.loggedInUser?.sub
 );
+
+export const getLoggedInUserRole = createSelector(
+  selectAuth,
+  (state) => state.loggedInUser?.role
+);

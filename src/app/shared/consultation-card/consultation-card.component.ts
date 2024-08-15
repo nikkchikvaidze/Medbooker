@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AttendeeType, Booking } from 'src/app/models';
+import { Store } from '@ngrx/store';
+import { Booking } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services';
+import { AppState } from 'src/app/store/states/app.state';
+import * as LoggedInUserSelectors from '../../store/selectors/auth.selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-consultation-card',
@@ -11,17 +14,14 @@ import { AuthService } from 'src/app/services';
 export class ConsultationCardComponent implements OnInit {
   @Input() booking: Booking | undefined;
   @Output() chosenBooking = new EventEmitter();
-  attendee = AttendeeType;
   role = Roles;
-  loggedInUserRole: Roles | undefined;
+  loggedInUserRole$: Observable<Roles | undefined> = this.store.select(
+    LoggedInUserSelectors.getLoggedInUserRole
+  );
 
-  constructor(public authService: AuthService) {}
+  constructor(private store: Store<AppState>) {}
 
-  ngOnInit(): void {
-    this.authService.getUser().subscribe((user) => {
-      this.loggedInUserRole = user?.['role'];
-    });
-  }
+  ngOnInit(): void {}
   getBooking(booking: Booking) {
     this.chosenBooking.emit(booking);
   }
