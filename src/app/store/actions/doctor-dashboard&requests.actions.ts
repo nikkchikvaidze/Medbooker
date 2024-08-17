@@ -30,11 +30,7 @@ export const loadPassedBookingsFailure = createAction(
 
 export const changeStatusForSelectedBooking = createAction(
   '[DocDashboard&Requests] Change status of selected booking',
-  props<{ id: number; status: Status }>()
-);
-
-export const changeStatusForSelectedBookingSuccess = createAction(
-  '[DocDashboard&Requests] Change status of selected booking Success'
+  props<{ id: number; status: Status; role: Roles; entityNo: string }>()
 );
 
 export const changeStatusForSelectedBookingFailure = createAction(

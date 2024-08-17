@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Booking, BookingRequest, Roles, Status } from '../models';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, switchMap } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({
@@ -38,13 +38,33 @@ export class BookingService {
     );
   }
 
-  updateBooking(bookingId: number, status: Status): Observable<any> {
+  updateBooking(
+    bookingId: number,
+    status: Status,
+    role: Roles,
+    entityNo: string
+  ): Observable<any> {
     const promise = this.supabaseService.supabase
       .from('bookings')
       .update({ status })
       .eq('id', bookingId)
       .select();
-    return from(promise);
+    return from(promise).pipe(
+      switchMap(() =>
+        from(
+          this.supabaseService.supabase
+            .from('bookings')
+            .select('*')
+            .eq(
+              role === Roles.Doctor ? 'doctorEntityNo' : 'patientEntityNo',
+              entityNo
+            )
+        )
+      ),
+      map((response) => {
+        return response.data;
+      })
+    );
   }
 
   getAllBooking(): Observable<Booking[]> {

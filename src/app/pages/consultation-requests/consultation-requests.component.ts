@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
-import { Booking, Status, StatusChange } from 'src/app/models';
+import { Observable, takeUntil } from 'rxjs';
+import { Booking, Roles, StatusChange } from 'src/app/models';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import { AppState } from 'src/app/store/states/app.state';
 import * as RequestsSelectors from '../../store/selectors/doctor-dashboard&requests.selector';
 import * as RequestActions from '../../store/actions/doctor-dashboard&requests.actions';
+import * as AuthSelectors from '../../store/selectors/auth.selector';
 
 @Component({
   selector: 'app-consultation-requests',
@@ -16,33 +17,51 @@ export class ConsultationRequestsComponent
   extends Unsubscribe
   implements OnInit
 {
-  bookings$: Observable<Booking[] | undefined> = this.store
-    .select(RequestsSelectors.getDocDashboardAndRequestsBookings)
-    .pipe(
-      map((bookings) =>
-        bookings.filter((booking) => booking.status === Status.PENDING)
-      )
-    );
+  bookings$: Observable<Booking[] | undefined> = this.store.select(
+    RequestsSelectors.getDocDashboardAndRequestsBookings
+  );
+
+  loggedInUserEntityNo: string = '';
 
   constructor(private store: Store<AppState>) {
     super();
   }
 
   ngOnInit(): void {
-    // this.loadingBookings();
+    this.getLoggedInUserEntityNo();
+    this.loadBookings();
+  }
+
+  getLoggedInUserEntityNo(): void {
+    this.store
+      .select(AuthSelectors.getLoggedInUserEntityNo)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((entityNo) => {
+        if (entityNo) {
+          this.loggedInUserEntityNo = entityNo;
+        }
+      });
+  }
+
+  loadBookings(): void {
+    if (this.loggedInUserEntityNo) {
+      this.store.dispatch(
+        RequestActions.loadDashboardAndRequestsBookings({
+          entityNo: this.loggedInUserEntityNo,
+          role: Roles.Doctor,
+        })
+      );
+    }
   }
 
   onStatusChange({ status, id }: StatusChange): void {
     this.store.dispatch(
-      RequestActions.changeStatusForSelectedBooking({ id, status })
+      RequestActions.changeStatusForSelectedBooking({
+        id,
+        status,
+        role: Roles.Doctor,
+        entityNo: this.loggedInUserEntityNo,
+      })
     );
-    // const bookingUpdateBody: BookingStatusUpdateRequest = {
-    //   bookingStatus: status,
-    //   comment: '',
-    //   includeDependent: true,
-    // };
-    // this.bookingService
-    //   .updateBooking(id, status)
-    //   .subscribe((_) => this.loadingBookings());
   }
 }
