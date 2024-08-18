@@ -1,29 +1,31 @@
-<nb-layout>
-  <nb-layout-column class="first-column">
-    <ng-container *ngIf="upcomingBookings && upcomingBookings.length > 0">
-      <!-- <app-consultation-card
-        *ngFor="let booking of bookings"
-        [booking]="booking"
-        [fullname]="booking.attendees | name : attendee"
-        [practiceName]="booking.practiceName"
-        (chosenBooking)="getSingleBooking($event)"
-      >
-      </app-consultation-card> -->
-      <app-consultation-card
-        *ngFor="let booking of upcomingBookings"
-        [booking]="booking"
-      >
-      </app-consultation-card>
-    </ng-container>
-  </nb-layout-column>
-  <!-- <nb-layout-column class="second-column">
-    <ng-container *ngIf="selectedBooking">
-      <app-consultation-cancel-card
-        [selectedBooking]="selectedBooking"
-        [practiceName]="selectedBooking.practiceName"
-        (statusChange)="onStatusChange($event)"
-      >
-      </app-consultation-cancel-card>
-    </ng-container>
-  </nb-layout-column> -->
-</nb-layout>
+<ng-container *ngIf="upcomingBookings$ | async as upcomingBookings">
+  <nb-layout>
+    <nb-layout-column class="first-column">
+      <ng-container *ngIf="upcomingBookings.length > 0">
+        <!-- <app-consultation-card
+          *ngFor="let booking of bookings"
+          [booking]="booking"
+          [fullname]="booking.attendees | name : attendee"
+          [practiceName]="booking.practiceName"
+          (chosenBooking)="getSingleBooking($event)"
+        >
+        </app-consultation-card> -->
+        <app-consultation-card
+          *ngFor="let booking of upcomingBookings"
+          [booking]="booking"
+        >
+        </app-consultation-card>
+      </ng-container>
+    </nb-layout-column>
+    <!-- <nb-layout-column class="second-column">
+      <ng-container *ngIf="selectedBooking">
+        <app-consultation-cancel-card
+          [selectedBooking]="selectedBooking"
+          [practiceName]="selectedBooking.practiceName"
+          (statusChange)="onStatusChange($event)"
+        >
+        </app-consultation-cancel-card>
+      </ng-container>
+    </nb-layout-column> -->
+  </nb-layout>
+</ng-container>

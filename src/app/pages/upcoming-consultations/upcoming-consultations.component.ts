@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, of, switchMap, takeUntil, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
 import {
   AttendeeType,
   Booking,
@@ -8,10 +9,14 @@ import {
   StatusChange,
   UpcomingBooking,
 } from 'src/app/models';
-import { Roles } from 'src/app/models/user.model';
+import { Roles, User } from 'src/app/models/user.model';
 import { AuthService, BookingService, DoctorService } from 'src/app/services';
 import { flattenBookings } from 'src/app/shared/utils/helpers.fn';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
+import { AppState } from 'src/app/store/states/app.state';
+import * as UpcomingConsultationsActions from '../../store/actions/upcoming-consultations.actions';
+import * as UpcomingConsultationSelectors from '../../store/selectors/upcoming-consultations.selector';
+import { getLoggedInUser } from '../../store/selectors/auth.selector';
 
 @Component({
   selector: 'app-upcoming-consultations',
@@ -22,7 +27,9 @@ export class UpcomingConsultationsComponent
   extends Unsubscribe
   implements OnInit
 {
-  upcomingBookings: Booking[] | undefined;
+  upcomingBookings$: Observable<Booking[]> = this.store.select(
+    UpcomingConsultationSelectors.getUpcomingConsultationBookings
+  );
   selectedBooking: UpcomingBooking | undefined;
   attendee!: AttendeeType;
   role!: Roles;
@@ -31,68 +38,31 @@ export class UpcomingConsultationsComponent
   constructor(
     private bookingService: BookingService,
     private doctorService: DoctorService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<AppState>
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.authService
-      .getUser()
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        switchMap((user) => {
-          return this.bookingService
-            .getBookingsForEntity(user?.['sub'], user?.['role'])
-            .pipe(
-              tap((x) => console.log(x, 'from tap')),
-              map((bookings) =>
-                bookings?.filter(
-                  (booking) => new Date(booking.startTime) > new Date()
-                )
-              )
-            );
-        })
-      )
-      .subscribe((bookings) => (this.upcomingBookings = bookings));
-    // this.loadUpcomingBookings();
+    this.loadUpcomingBookings();
   }
 
-  // loadUpcomingBookings(): void {
-  //   this.upcomingBookings$ = this.bookingService
-  //     .getBookingsForEntity(this.role, new Date().toISOString(), undefined)
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$),
-  //       map((bookings) =>
-  //         flattenBookings(bookings)
-  //           .filter((element) => element.status == Status.CONFIRMED)
-  //           .sort(
-  //             (a, b) =>
-  //               Number(new Date(a.startTime)) - Number(new Date(b.startTime))
-  //           )
-  //       ),
-  //       switchMap((bookings) => {
-  //         if (this.role == Roles.Doctor) {
-  //           return of(bookings);
-  //         }
-  //         return this.doctorService.getAllDoctors().pipe(
-  //           map((doctors) => {
-  //             return bookings.map((booking) => {
-  //               const doctorsEntity = booking.attendees.find(
-  //                 (attendee) => attendee.attendeeType == AttendeeType.PROVIDER
-  //               )?.entityNo;
-  //               return {
-  //                 ...booking,
-  //                 specialty: doctors.find(
-  //                   (doctor) => doctor.entityNo == doctorsEntity
-  //                 )?.specialty,
-  //               };
-  //             });
-  //           })
-  //         );
-  //       })
-  //     );
-  // }
+  loadUpcomingBookings(): void {
+    this.store
+      .select(getLoggedInUser)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((loggedInUser) => {
+        if (loggedInUser?.sub && loggedInUser?.role) {
+          this.store.dispatch(
+            UpcomingConsultationsActions.loadUpcomingBookings({
+              entityNo: loggedInUser.sub,
+              role: loggedInUser.role,
+            })
+          );
+        }
+      });
+  }
 
   // getSingleBooking(booking: Booking): void {
   //   this.selectedBooking = booking;

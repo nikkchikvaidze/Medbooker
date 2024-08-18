@@ -1,17 +1,21 @@
 import { createAction, props } from '@ngrx/store';
-import { Booking } from 'src/app/models';
+import { Booking, Roles } from 'src/app/models';
 
 export const loadUpcomingBookings = createAction(
   '[Upcoming Consultation Page] Load upcoming bookings',
-  props<{ entityNo: number }>()
+  props<{ entityNo: string; role: Roles }>()
 );
 
-export const loadPassedBookingsSuccess = createAction(
+export const loadUpcomingBookingsSuccess = createAction(
   '[Upcoming Consultation Page] Load upcoming bookings success',
   props<{ bookings: Booking[] }>()
 );
 
-export const loadPassedBookingsFailure = createAction(
+export const loadUpcomingBookingsNoData = createAction(
+  '[Upcoming Consultation Page] Load upcoming bookings No Data'
+);
+
+export const loadUpcomingBookingsFailure = createAction(
   '[Upcoming Consultation Page] Load upcoming bookings failure'
 );
 

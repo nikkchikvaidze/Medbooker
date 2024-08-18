@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { capitalize } from 'src/app/shared/utils/capitalize';
+import { AppState } from 'src/app/store/states/app.state';
+import { clearLoggedInUser } from '../../store/actions/auth.action';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +17,11 @@ export class HeaderComponent implements OnInit {
   showBtn = true;
   fullname: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit(): void {
     this.authService.getAuthState().subscribe((session) => {
@@ -32,6 +39,7 @@ export class HeaderComponent implements OnInit {
 
   signoutUser() {
     this.authService.signOut().subscribe((_) => {
+      this.store.dispatch(clearLoggedInUser());
       this.router.navigate(['/login']);
     });
   }

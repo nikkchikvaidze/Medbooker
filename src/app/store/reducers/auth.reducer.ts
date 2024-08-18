@@ -10,10 +10,14 @@ export const authReducer = createReducer(
       loggedInUser: payload.user,
     };
   }),
-  on(AuthActions.getLoggedInUserFailure, (state): AuthState => {
+  on(AuthActions.getLoggedInUserFailure, (): AuthState => {
     return {
-      ...state,
-      loggedInUser: undefined,
+      ...initialAuthState,
+    };
+  }),
+  on(AuthActions.clearLoggedInUser, (): AuthState => {
+    return {
+      ...initialAuthState,
     };
   })
 );

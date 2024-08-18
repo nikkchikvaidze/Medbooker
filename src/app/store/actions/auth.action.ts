@@ -12,3 +12,5 @@ export const getLoggedInUserNoData = createAction(
 export const getLoggedInUserFailure = createAction(
   '[Auth] Get Logged In User Failure'
 );
+
+export const clearLoggedInUser = createAction('[Auth] Clear Logged In User');

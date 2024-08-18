@@ -13,3 +13,8 @@ export const getSelectedUpcomingBooking = createSelector(
   selectUpcomingPageState,
   (state) => state.selectedBooking
 );
+
+export const getUpcomingConsultationState = createSelector(
+  selectUpcomingPageState,
+  (state) => state.callState
+);

@@ -4,24 +4,42 @@ import {
   UpcomingState,
 } from '../states/upcoming-consultations.state';
 import * as UpcomingConsultationActions from '../actions/upcoming-consultations.actions';
+import { CallState } from 'src/app/models';
 
 export const upcomingReducer = createReducer(
   initialUpcomingState,
+  on(UpcomingConsultationActions.loadUpcomingBookings, (): UpcomingState => {
+    return {
+      ...initialUpcomingState,
+      callState: CallState.LOADING,
+    };
+  }),
   on(
-    UpcomingConsultationActions.loadPassedBookingsSuccess,
+    UpcomingConsultationActions.loadUpcomingBookingsSuccess,
     (state, action): UpcomingState => {
       return {
         ...state,
         upcomingBookings: action.bookings,
+        callState: CallState.LOADED,
       };
     }
   ),
   on(
-    UpcomingConsultationActions.loadPassedBookingsFailure,
-    (state, action): UpcomingState => {
+    UpcomingConsultationActions.loadUpcomingBookingsNoData,
+    (): UpcomingState => {
+      return {
+        ...initialUpcomingState,
+        callState: CallState.NO_DATA,
+      };
+    }
+  ),
+  on(
+    UpcomingConsultationActions.loadUpcomingBookingsFailure,
+    (state): UpcomingState => {
       return {
         ...state,
         upcomingBookings: [],
+        callState: CallState.ERROR,
       };
     }
   ),

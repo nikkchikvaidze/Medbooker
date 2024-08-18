@@ -29,6 +29,7 @@ export const patientsReducer = createReducer(
     return {
       ...state,
       patientsList: [],
+      callState: CallState.ERROR,
     };
   }),
   on(PatientsActions.searchForPatient, (state): PatientsState => {
