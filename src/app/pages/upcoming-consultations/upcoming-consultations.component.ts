@@ -64,22 +64,22 @@ export class UpcomingConsultationsComponent
       });
   }
 
-  // getSingleBooking(booking: Booking): void {
-  //   this.selectedBooking = booking;
-  // }
+  getSingleBooking(booking: Booking): void {
+    this.selectedBooking = booking;
+  }
 
-  // onStatusChange(status: StatusChange): void {
-  //   const bookingUpdateBody: BookingStatusUpdateRequest = {
-  //     bookingStatus: status.status,
-  //     comment: '',
-  //     includeDependent: true,
-  //   };
-  //   this.bookingService
-  //     .updateBooking(status.id, bookingUpdateBody)
-  //     .pipe(takeUntil(this.unsubscribe$))
-  //     .subscribe(() => {
-  //       this.loadUpcomingBookings();
-  //       this.selectedBooking = undefined;
-  //     });
-  // }
+  onStatusChange(status: StatusChange): void {
+    const bookingUpdateBody: BookingStatusUpdateRequest = {
+      bookingStatus: status.status,
+      comment: '',
+      includeDependent: true,
+    };
+    // this.bookingService
+    //   .updateBooking(status.id, bookingUpdateBody)
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe(() => {
+    //     this.loadUpcomingBookings();
+    //     this.selectedBooking = undefined;
+    //   });
+  }
 }

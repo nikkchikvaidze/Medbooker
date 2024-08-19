@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AttendeeType, Booking, Status } from 'src/app/models';
+import { Booking, Status, StatusChange } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services';
 
@@ -10,8 +10,7 @@ import { AuthService } from 'src/app/services';
 })
 export class ConsultationCancelCardComponent implements OnInit {
   @Input() selectedBooking: Booking | undefined;
-  @Output() statusChange = new EventEmitter();
-  attendee = AttendeeType;
+  @Output() statusChange = new EventEmitter<StatusChange>();
   role = Roles;
   status = Status;
   showCard = true;
@@ -28,10 +27,10 @@ export class ConsultationCancelCardComponent implements OnInit {
     this.showButton();
   }
 
-  changeStatus(status: string, id: number) {
+  changeStatus(status: Status, id: number) {
     this.statusChange.emit({
-      status: status,
-      id: id,
+      status,
+      id,
     });
     this.showCard = false;
   }
