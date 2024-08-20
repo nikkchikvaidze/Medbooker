@@ -13,14 +13,14 @@
       </nb-card-header>
       <nb-card-body>
         {{ selectedBooking.startTime | date : "medium" }}
-        <!-- <button
+        <button
           *ngIf="cancelButton"
           nbButton
           status="danger"
-          (click)="changeStatus(status., selectedBooking.id)"
+          (click)="changeStatus(status.DECLINED, selectedBooking.id)"
         >
           Cancel booking
-        </button> -->
+        </button>
       </nb-card-body>
     </ng-container>
   </nb-card>

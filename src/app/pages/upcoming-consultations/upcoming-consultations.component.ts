@@ -1,17 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
-import {
-  AttendeeType,
-  Booking,
-  BookingStatusUpdateRequest,
-  Status,
-  StatusChange,
-  UpcomingBooking,
-} from 'src/app/models';
-import { Roles, User } from 'src/app/models/user.model';
-import { AuthService, BookingService, DoctorService } from 'src/app/services';
-import { flattenBookings } from 'src/app/shared/utils/helpers.fn';
+import { Observable, takeUntil } from 'rxjs';
+import { Booking, StatusChange, UpcomingBooking } from 'src/app/models';
+import { User } from 'src/app/models/user.model';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 import { AppState } from 'src/app/store/states/app.state';
 import * as UpcomingConsultationsActions from '../../store/actions/upcoming-consultations.actions';
@@ -31,55 +22,54 @@ export class UpcomingConsultationsComponent
     UpcomingConsultationSelectors.getUpcomingConsultationBookings
   );
   selectedBooking: UpcomingBooking | undefined;
-  attendee!: AttendeeType;
-  role!: Roles;
   showCard = false;
+  loggedInUserDetails: User | undefined;
 
-  constructor(
-    private bookingService: BookingService,
-    private doctorService: DoctorService,
-    private authService: AuthService,
-    private store: Store<AppState>
-  ) {
+  constructor(private store: Store<AppState>) {
     super();
   }
 
   ngOnInit(): void {
+    this.getLoggedInUserDetails();
     this.loadUpcomingBookings();
   }
 
-  loadUpcomingBookings(): void {
+  getLoggedInUserDetails(): void {
     this.store
       .select(getLoggedInUser)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((loggedInUser) => {
-        if (loggedInUser?.sub && loggedInUser?.role) {
-          this.store.dispatch(
-            UpcomingConsultationsActions.loadUpcomingBookings({
-              entityNo: loggedInUser.sub,
-              role: loggedInUser.role,
-            })
-          );
+        if (loggedInUser) {
+          this.loggedInUserDetails = loggedInUser;
         }
       });
+  }
+
+  loadUpcomingBookings(): void {
+    if (this.loggedInUserDetails) {
+      this.store.dispatch(
+        UpcomingConsultationsActions.loadUpcomingBookings({
+          entityNo: this.loggedInUserDetails.sub,
+          role: this.loggedInUserDetails.role,
+        })
+      );
+    }
   }
 
   getSingleBooking(booking: Booking): void {
     this.selectedBooking = booking;
   }
 
-  onStatusChange(status: StatusChange): void {
-    const bookingUpdateBody: BookingStatusUpdateRequest = {
-      bookingStatus: status.status,
-      comment: '',
-      includeDependent: true,
-    };
-    // this.bookingService
-    //   .updateBooking(status.id, bookingUpdateBody)
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe(() => {
-    //     this.loadUpcomingBookings();
-    //     this.selectedBooking = undefined;
-    //   });
+  onStatusChange({ status, id }: StatusChange): void {
+    this.loggedInUserDetails?.sub &&
+      this.store.dispatch(
+        UpcomingConsultationsActions.cancelSelectedUpcomingBooking({
+          entityNo: this.loggedInUserDetails.sub,
+          role: this.loggedInUserDetails.role,
+          id,
+          status,
+        })
+      );
+    this.selectedBooking = undefined;
   }
 }

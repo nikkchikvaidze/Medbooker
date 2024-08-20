@@ -1,25 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
-import {
-  AttendeeType,
-  Booking,
-  BookingStatusUpdateRequest,
-  Status,
-} from 'src/app/models';
-import { Roles } from 'src/app/models/user.model';
-import { BookingService, DoctorService } from 'src/app/services';
-import { flattenBookings } from 'src/app/shared/utils/helpers.fn';
+import { catchError, map, of, switchMap } from 'rxjs';
+import { Booking, Status } from 'src/app/models';
+import { BookingService } from 'src/app/services';
 import * as UpcomingActions from '../actions/upcoming-consultations.actions';
 
 @Injectable({ providedIn: 'root' })
 export class UpcomingConsultationsEffects {
-  role = Roles.Doctor | Roles.Patient;
-
   constructor(
     private actions$: Actions,
-    private bookingService: BookingService,
-    private doctorService: DoctorService
+    private bookingService: BookingService
   ) {}
 
   loadUpcomingConsultationBookings$ = createEffect(() => {
@@ -52,25 +42,24 @@ export class UpcomingConsultationsEffects {
     );
   });
 
-  // changeStatusToSelectedBooking$ = createEffect(() => {
-  //   const bookingUpdateBody: BookingStatusUpdateRequest = {
-  //     bookingStatus: Status.CANCELLED,
-  //     comment: '',
-  //     includeDependent: true,
-  //   };
-  //   return this.actions$.pipe(
-  //     ofType(UpcomingActions.cancelSelectedUpcomingBooking),
-  //     mergeMap((action) => {
-  //       return this.bookingService
-  //         .updateBooking(action.id, bookingUpdateBody)
-  //         .pipe(
-  //           map(() => {
-  //             return UpcomingActions.loadUpcomingBookings({
-  //               entityNo: action.entityNo,
-  //             });
-  //           })
-  //         );
-  //     })
-  //   );
-  // });
+  changeStatusToSelectedBooking$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(UpcomingActions.cancelSelectedUpcomingBooking),
+      switchMap(({ id, status, role, entityNo }) => {
+        return this.bookingService
+          .updateBooking(id, status, role, entityNo)
+          .pipe(
+            map(() => {
+              return UpcomingActions.loadUpcomingBookings({
+                entityNo,
+                role,
+              });
+            }),
+            catchError(() =>
+              of(UpcomingActions.cancelSelectedUpcomingBookingFailure())
+            )
+          );
+      })
+    );
+  });
 }

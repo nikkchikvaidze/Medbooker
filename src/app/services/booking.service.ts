@@ -54,7 +54,7 @@ export class BookingService {
         from(
           this.supabaseService.supabase
             .from('bookings')
-            .select('*')
+            .select('*, doctor:doctorEntityNo (*), patient:patientEntityNo (*)')
             .eq(
               role === Roles.Doctor ? 'doctorEntityNo' : 'patientEntityNo',
               entityNo
