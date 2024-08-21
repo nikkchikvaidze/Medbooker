@@ -8,6 +8,11 @@ export const getPassedBookings = createSelector(
   (state) => state.pastBookings
 );
 
+export const getPassedBookingsState = createSelector(
+  selectHealthPageState,
+  (state) => state.callState
+);
+
 export const getSelectedBooking = createSelector(
   selectHealthPageState,
   (state) => state.selectedBooking

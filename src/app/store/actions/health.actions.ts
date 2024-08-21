@@ -3,12 +3,16 @@ import { Booking } from 'src/app/models';
 
 export const loadPassedBookings = createAction(
   '[HealthPage] Get passed bookings',
-  props<{ entityNo: number }>()
+  props<{ entityNo: string }>()
 );
 
 export const loadPassedBookingsSuccess = createAction(
   '[HealthPage] Get passed bookings success',
   props<{ bookings: Booking[] }>()
+);
+
+export const loadPassedBookingsNoData = createAction(
+  '[HealthPage] Get passed bookings no data'
 );
 
 export const loadPassedBookingsFailure = createAction(

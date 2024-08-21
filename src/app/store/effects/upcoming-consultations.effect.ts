@@ -22,7 +22,7 @@ export class UpcomingConsultationsEffects {
         const UpcomingBookings = bookings
           .filter(
             (booking) =>
-              booking.status === Status.CONFIRMED &&
+              booking.status !== Status.DECLINED &&
               new Date(booking.startTime) > new Date()
           )
           .sort(

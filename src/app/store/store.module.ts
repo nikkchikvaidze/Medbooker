@@ -7,7 +7,7 @@ import {
   DocDashboardAndRequestsEffects,
   DoctorBookEffects,
   DoctorsEffects,
-  // HealthPageEffects,
+  HealthPageEffects,
   PatientsEffects,
   UpcomingConsultationsEffects,
 } from './effects';
@@ -22,7 +22,7 @@ import { AuthEffects } from './effects/auth.effect';
       DoctorsEffects,
       PatientsEffects,
       DoctorBookEffects,
-      // HealthPageEffects,
+      HealthPageEffects,
       UpcomingConsultationsEffects,
       DocDashboardAndRequestsEffects,
     ]),
