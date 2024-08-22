@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Booking } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
-import { AppState } from 'src/app/store/states/app.state';
-import * as LoggedInUserSelectors from '../../store/selectors/auth.selector';
+import { AppState } from '@store/states/app.state';
+import * as LoggedInUserSelectors from '@store/selectors/auth.selector';
 import { Observable } from 'rxjs';
 
 @Component({

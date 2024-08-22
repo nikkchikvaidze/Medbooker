@@ -5,7 +5,7 @@ import { AuthError } from '@supabase/supabase-js';
 import { map, Observable, of, switchMap, takeUntil } from 'rxjs';
 import { CreateDoctorRequest, CreatePatientRequest } from 'src/app/models';
 import { Specialty } from 'src/app/models/specialty.model';
-import { Roles, User, UserRequest } from 'src/app/models/user.model';
+import { Roles, UserRequest } from 'src/app/models/user.model';
 import { AuthService, DoctorService } from 'src/app/services';
 import { PatientService } from 'src/app/services/patient.service';
 import { SpecialtiesService } from 'src/app/services/specialties.service';

@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { filter, map, Observable, takeUntil } from 'rxjs';
 import { Roles } from 'src/app/models/user.model';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import { AppState } from 'src/app/store/states/app.state';
-import * as AuthActions from '../../store/actions/auth.action';
-import * as AuthSelectors from '../../store/selectors/auth.selector';
+import { AppState } from '@store/states/app.state';
+import * as AuthActions from '@store/actions/auth.action';
+import * as AuthSelectors from '@store/selectors/auth.selector';
 
 @Component({
   selector: 'app-dashboard',

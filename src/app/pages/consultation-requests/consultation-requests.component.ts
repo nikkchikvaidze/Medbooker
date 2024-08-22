@@ -3,10 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable, takeUntil } from 'rxjs';
 import { Booking, Roles, StatusChange } from 'src/app/models';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import { AppState } from 'src/app/store/states/app.state';
-import * as RequestsSelectors from '../../store/selectors/doctor-dashboard&requests.selector';
-import * as RequestActions from '../../store/actions/doctor-dashboard&requests.actions';
-import * as AuthSelectors from '../../store/selectors/auth.selector';
+import { AppState } from '@store/states/app.state';
+import * as RequestsSelectors from '@store/selectors/doctor-dashboard&requests.selector';
+import * as RequestActions from '@store/actions/doctor-dashboard&requests.actions';
+import * as AuthSelectors from '@store/selectors/auth.selector';
 
 @Component({
   selector: 'app-consultation-requests',

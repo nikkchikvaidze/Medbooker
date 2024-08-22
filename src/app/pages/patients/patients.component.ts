@@ -5,10 +5,10 @@ import { Observable, debounceTime, takeUntil } from 'rxjs';
 import { BookingRequest, Patient, Status } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import { AppState } from 'src/app/store/states/app.state';
-import * as AuthSelectors from '../../store/selectors/auth.selector';
-import * as PatientsActions from '../../store/actions/patients.actions';
-import * as PatientsSelectors from '../../store/selectors/patients.selector';
+import { AppState } from '@store/states/app.state';
+import * as AuthSelectors from '@store/selectors/auth.selector';
+import * as PatientsActions from '@store/actions/patients.actions';
+import * as PatientsSelectors from '@store/selectors/patients.selector';
 
 @Component({
   selector: 'app-patients',

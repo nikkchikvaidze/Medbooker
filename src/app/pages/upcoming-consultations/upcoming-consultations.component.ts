@@ -4,10 +4,10 @@ import { Observable, takeUntil } from 'rxjs';
 import { Booking, StatusChange, UpcomingBooking } from 'src/app/models';
 import { User } from 'src/app/models/user.model';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import { AppState } from 'src/app/store/states/app.state';
-import * as UpcomingConsultationsActions from '../../store/actions/upcoming-consultations.actions';
-import * as UpcomingConsultationSelectors from '../../store/selectors/upcoming-consultations.selector';
-import { getLoggedInUser } from '../../store/selectors/auth.selector';
+import { AppState } from '@store/states/app.state';
+import * as UpcomingConsultationsActions from '@store/actions/upcoming-consultations.actions';
+import * as UpcomingConsultationSelectors from '@store/selectors/upcoming-consultations.selector';
+import { getLoggedInUser } from '@store/selectors/auth.selector';
 
 @Component({
   selector: 'app-upcoming-consultations',

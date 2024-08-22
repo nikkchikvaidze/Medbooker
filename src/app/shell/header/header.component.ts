@@ -4,8 +4,8 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { capitalize } from 'src/app/shared/utils/capitalize';
-import { AppState } from 'src/app/store/states/app.state';
-import { clearLoggedInUser } from '../../store/actions/auth.action';
+import { AppState } from '@store/states/app.state';
+import { clearLoggedInUser } from '@store/actions/auth.action';
 
 @Component({
   selector: 'app-header',

@@ -6,9 +6,9 @@ import { BookingRequest, Doctor, Patient, Status } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import { AppState } from 'src/app/store/states/app.state';
-import * as DoctorBookActions from '../../store/actions/doctor-book.actions';
-import * as DoctorBookSelectors from '../../store/selectors/doctor-book.selector';
+import { AppState } from '@store/states/app.state';
+import * as DoctorBookActions from '@store/actions/doctor-book.actions';
+import * as DoctorBookSelectors from '@store/selectors/doctor-book.selector';
 
 @Component({
   selector: 'app-doctor-book',

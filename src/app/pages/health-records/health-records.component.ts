@@ -3,10 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable, takeUntil } from 'rxjs';
 import { Booking } from 'src/app/models';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import { AppState } from 'src/app/store/states/app.state';
-import * as HealthRecordsSelectors from '../../store/selectors/health.selector';
-import * as HealthRecordsActions from '../../store/actions/health.actions';
-import { getLoggedInUserEntityNo } from '../../store/selectors/auth.selector';
+import { AppState } from '@store/states/app.state';
+import * as HealthRecordsSelectors from '@store/selectors/health.selector';
+import * as HealthRecordsActions from '@store/actions/health.actions';
+import { getLoggedInUserEntityNo } from '@store/selectors/auth.selector';
 
 @Component({
   selector: 'app-health-records',

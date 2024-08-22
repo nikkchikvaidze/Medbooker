@@ -7,9 +7,9 @@ import { Doctor } from 'src/app/models';
 import { MapCoords } from 'src/app/shared/map/map-coords.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
-import * as DoctorSelectors from '../../store/selectors/doctor-search.selector';
-import * as DoctorActions from '../../store/actions/doctor-search.actions';
-import { AppState } from 'src/app/store/states/app.state';
+import * as DoctorSelectors from '@store/selectors/doctor-search.selector';
+import * as DoctorActions from '@store/actions/doctor-search.actions';
+import { AppState } from '@store/states/app.state';
 
 @Component({
   selector: 'app-doctor-search',
