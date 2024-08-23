@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Booking } from 'src/app/models';
 import { Roles } from 'src/app/models/user.model';
 import { AppState } from '@store/states/app.state';
-import * as LoggedInUserSelectors from '@store/selectors/auth.selector';
+import * as AuthSelectors from '@store/selectors/auth.selector';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class ConsultationCardComponent implements OnInit {
   @Output() chosenBooking = new EventEmitter();
   role = Roles;
   loggedInUserRole$: Observable<Roles | undefined> = this.store.select(
-    LoggedInUserSelectors.getLoggedInUserRole
+    AuthSelectors.getLoggedInUserRole
   );
 
   constructor(private store: Store<AppState>) {}

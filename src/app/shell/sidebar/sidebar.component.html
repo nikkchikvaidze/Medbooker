@@ -1,66 +1,68 @@
-<div class="buttons">
-  <button
-    class="dashboard"
-    nbButton
-    outline
-    status="basic"
-    routerLink="/shell/dashboard"
-    routerLinkActive="activated"
-  >
-    Dashboard
-  </button>
-  <button
-    *ngIf="roleFromEntity === role.Patient"
-    class="doctors"
-    nbButton
-    outline
-    status="basic"
-    routerLinkActive="activated"
-    routerLink="/shell/search"
-  >
-    Doctors
-  </button>
-  <button
-    class="upcoming"
-    nbButton
-    outline
-    status="basic"
-    routerLinkActive="activated"
-    routerLink="/shell/upcoming-consultations"
-  >
-    Upcoming Consultations
-  </button>
-  <button
-    *ngIf="roleFromEntity === role.Patient"
-    class="records"
-    nbButton
-    outline
-    status="basic"
-    routerLinkActive="activated"
-    routerLink="/shell/health-records"
-  >
-    Health Records
-  </button>
-  <button
-    *ngIf="roleFromEntity === role.Doctor"
-    class="requests"
-    nbButton
-    outline
-    status="basic"
-    routerLinkActive="activated"
-    routerLink="/shell/consultation-requests"
-  >
-    Requests
-  </button>
-  <button
-    *ngIf="roleFromEntity === role.Doctor"
-    class="patients"
-    nbButton
-    outline
-    status="basic"
-    routerLinkActive="activated"
-    routerLink="/shell/patients"
-  >
-    Patients
-  </button>
-</div>
+<ng-container *ngIf="loggedInUserRole$ | async as userRole">
+  <div class="buttons">
+    <button
+      class="dashboard"
+      nbButton
+      outline
+      status="basic"
+      routerLink="/shell/dashboard"
+      routerLinkActive="activated"
+    >
+      Dashboard
+    </button>
+    <button
+      *ngIf="userRole === role.Patient"
+      class="doctors"
+      nbButton
+      outline
+      status="basic"
+      routerLinkActive="activated"
+      routerLink="/shell/search"
+    >
+      Doctors
+    </button>
+    <button
+      class="upcoming"
+      nbButton
+      outline
+      status="basic"
+      routerLinkActive="activated"
+      routerLink="/shell/upcoming-consultations"
+    >
+      Upcoming Consultations
+    </button>
+    <button
+      *ngIf="userRole === role.Patient"
+      class="records"
+      nbButton
+      outline
+      status="basic"
+      routerLinkActive="activated"
+      routerLink="/shell/health-records"
+    >
+      Health Records
+    </button>
+    <button
+      *ngIf="userRole === role.Doctor"
+      class="requests"
+      nbButton
+      outline
+      status="basic"
+      routerLinkActive="activated"
+      routerLink="/shell/consultation-requests"
+    >
+      Requests
+    </button>
+    <button
+      *ngIf="userRole === role.Doctor"
+      class="patients"
+      nbButton
+      outline
+      status="basic"
+      routerLinkActive="activated"
+      routerLink="/shell/patients"
+    >
+      Patients
+    </button>
+  </div>
+</ng-container>

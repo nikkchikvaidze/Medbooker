@@ -6,13 +6,16 @@ import { AuthService } from 'src/app/services/auth.service';
 import { capitalize } from 'src/app/shared/utils/capitalize';
 import { AppState } from '@store/states/app.state';
 import { clearLoggedInUser } from '@store/actions/auth.action';
+import * as AuthSelectors from '@store/selectors/auth.selector';
+import { takeUntil } from 'rxjs';
+import { Unsubscribe } from 'src/app/shared/utils/unsubscribe';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent extends Unsubscribe implements OnInit {
   arrowIcon = faArrowRightFromBracket;
   showBtn = true;
   fullname: string = '';
@@ -21,16 +24,25 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private store: Store<AppState>
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.authService.getAuthState().subscribe((session) => {
-      if (session?.user) {
-        let firstname = session.user.user_metadata['firstName'];
-        let lastname = session.user.user_metadata['lastName'];
-        this.fullname = `${capitalize(firstname)} ${capitalize(lastname)}`;
-      }
-    });
+    this.getFullName();
+  }
+
+  getFullName(): void {
+    this.store
+      .select(AuthSelectors.getLoggedInUser)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((loggedInUser) => {
+        if (loggedInUser) {
+          this.fullname = `${capitalize(loggedInUser.firstName)} ${capitalize(
+            loggedInUser.lastName
+          )}`;
+        }
+      });
   }
 
   resetHiddenBtn() {

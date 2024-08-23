@@ -1,22 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store/states/app.state';
+import { Observable } from 'rxjs';
 import { Roles } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services';
+import { getLoggedInUserRole } from '@store/selectors/auth.selector';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+export class SidebarComponent {
   role = Roles;
-  roleFromEntity: number | undefined;
+  loggedInUserRole$: Observable<number | undefined> =
+    this.store.select(getLoggedInUserRole);
 
-  ngOnInit(): void {
-    this.authService.getAuthState().subscribe((session) => {
-      if (session?.user) {
-        this.roleFromEntity = session.user.user_metadata['role'];
-      }
-    });
-  }
+  constructor(private store: Store<AppState>) {}
 }
