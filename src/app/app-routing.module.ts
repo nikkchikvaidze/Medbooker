@@ -15,6 +15,7 @@ import { LoginComponent } from './auth/login';
 import { RegisterComponent } from './auth/register';
 import { AnonymGuard, AuthGuard, PermissionGuard } from './guards';
 import { Roles } from './models/user.model';
+import { NotFoundComponent } from './shell/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -91,6 +92,11 @@ const routes: Routes = [
         },
       },
     ],
+  },
+  {
+    path: '**',
+    canActivate: [AnonymGuard],
+    component: NotFoundComponent,
   },
 ];
 @NgModule({

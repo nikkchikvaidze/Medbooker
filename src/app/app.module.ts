@@ -32,6 +32,7 @@ import {
 } from '@nebular/theme';
 import { StoreStateModule } from './store/store.module';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { NotFoundComponent } from './shell/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     ConsultationRequestsComponent,
     DoctorDashboardComponent,
     PatientDashboardComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
